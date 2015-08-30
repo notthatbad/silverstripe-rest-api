@@ -14,3 +14,13 @@ After that, you can add your routes into your YAML config file.
  * Different serialisation formats
  * Pagination
  * Presenters
+ 
+## Usage
+
+Every endpoint has its own controller. The controller should extend `BaseRestController`.
+
+
+## Testing
+
+For functional tests, you can extend the `RestTest` class and use it to test your application. We recommend to use 
+fixtures for testing like it is explained in the Silverstripe documentation.
