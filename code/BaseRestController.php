@@ -156,14 +156,4 @@ class BaseRestController extends Controller {
         }
         return strtolower($method);
     }
-
-    /**
-     * Serializes the given data into a json string.
-     *
-     * @param array $data
-     * @return string
-     */
-    private function serialize($data) {
-        return json_encode($data);
-    }
 }
