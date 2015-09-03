@@ -59,7 +59,7 @@ class BaseRestController extends Controller {
 
         $className = get_class($this);
         // create serializer
-        $serializer = SerializerFactory::create();
+        $serializer = SerializerFactory::create_from_request($request);
         if(!$this->hasMethod($action)) {
             // method couldn't found on controller
             return new SS_HTTPResponse("Action '$action' isn't available on class $className.", 404);

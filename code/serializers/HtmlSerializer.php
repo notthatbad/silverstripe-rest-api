@@ -2,8 +2,6 @@
 
 /**
  * Serializer for html.
- *
- * @todo Use a better way to display the result in html
  */
 class HtmlSerializer extends ViewableData implements IRestSerializer {
 
@@ -20,10 +18,24 @@ class HtmlSerializer extends ViewableData implements IRestSerializer {
      * @return string an html string
      */
     public function serialize($data) {
-        return $this->renderWith('Result', new ArrayData(['Data' => print_r($data, true)]));
+        $list = $this->recursive($data, 1);
+        return $this->renderWith(['Result', 'Controller'], ['Data' => ArrayList::create($list)]);
     }
 
     public function contentType() {
         return $this->contentType;
+    }
+
+    private function recursive($data, $level) {
+        $list = [];
+        foreach ($data as $key => $value) {
+            if(is_array($value)) {
+                $list[] = ArrayData::create(['Key' => $key, 'Value' => '', 'Heading' => true, 'Level' => $level]);
+                $list = array_merge($list, $this->recursive($value, $level+1));
+            } else {
+                $list[] = ArrayData::create(['Key' => $key, 'Value' => $value, 'Level' => $level]);
+            }
+        }
+        return $list;
     }
 }
