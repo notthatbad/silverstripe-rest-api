@@ -19,6 +19,9 @@ After that, you can add your routes into your YAML config file.
 
 Every endpoint has its own controller. The controller should extend `BaseRestController`.
 
+If you visit your api through a browser, the controller will render it as html as long as you not specified an `accept`
+GET param, eg. `?accept=json`.
+
 
 ## Testing
 
