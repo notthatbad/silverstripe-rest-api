@@ -28,12 +28,14 @@ class HtmlSerializer extends ViewableData implements IRestSerializer {
 
     private function recursive($data, $level) {
         $list = [];
-        foreach ($data as $key => $value) {
-            if(is_array($value)) {
-                $list[] = ArrayData::create(['Key' => $key, 'Value' => '', 'Heading' => true, 'Level' => $level]);
-                $list = array_merge($list, $this->recursive($value, $level+1));
-            } else {
-                $list[] = ArrayData::create(['Key' => $key, 'Value' => $value, 'Level' => $level]);
+        if(is_array($data)) {
+            foreach ($data as $key => $value) {
+                if(is_array($value)) {
+                    $list[] = ArrayData::create(['Key' => $key, 'Value' => '', 'Heading' => true, 'Level' => $level]);
+                    $list = array_merge($list, $this->recursive($value, $level+1));
+                } else {
+                    $list[] = ArrayData::create(['Key' => $key, 'Value' => $value, 'Level' => $level]);
+                }
             }
         }
         return $list;
