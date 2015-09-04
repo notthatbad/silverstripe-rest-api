@@ -27,7 +27,7 @@ class RestTest extends FunctionalTest {
     public function makeApiRequest($path, $method='GET', $body=null, $responseCode=200) {
         // TODO: set json as as mime type
         $response = Director::test(Controller::join_links($this->namespace, $path), null, null, $method, $body);
-        $this->assertEquals($responseCode, $response->getStatusCode());
+        $this->assertEquals($responseCode, $response->getStatusCode(), "Wrong status code: {$response->getBody()}");
 
         return json_decode($response->getBody(), true);
     }

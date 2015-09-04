@@ -55,6 +55,13 @@ class RestValidatorHelper {
         }
     }
 
+    /**
+     * @param $data
+     * @param $field
+     * @param bool $required
+     * @return string
+     * @throws ValidationException
+     */
     public static function validate_date($data, $field, $required=true) {
         if(isset($data[$field]) && is_string($data[$field])) {
             $date = $data[$field];
@@ -67,7 +74,13 @@ class RestValidatorHelper {
         }
     }
 
-
+    /**
+     * @param $data
+     * @param $field
+     * @param bool $required
+     * @return string
+     * @throws ValidationException
+     */
     public static function validate_url($data, $field, $required=true) {
         if(isset($data[$field]) && is_string($data[$field])) {
             $url = $data[$field];
@@ -81,21 +94,56 @@ class RestValidatorHelper {
     }
 
     /**
-     * Validates an URL (defined in RFC 3986) with http or https protocol. If no
-     * protocol was found, 'http' is set automatically.
+     * Validates an URL (defined in RFC 3986).
      *
-     * @param string $url
+     * @param string $url the url, that should be validated
      * @return boolean
      */
-    private static function is_url(&$url) {
-        $matches = array();
-        if (preg_match('/^(https?:\/\/)?(?:.+@)?(?:[\p{L}\d-]+\.)+\w{2,6}/', $url, $matches)) {
-            if (!$matches[1]) {
-                $url = 'http://' . $url;
+    public static function is_url($url) {
+        /**
+         * @author https://gist.github.com/dperini/729294
+         */
+        $regex = '_^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\x{00a1}-\x{ffff}0-9]-*)*[a-z\x{00a1}-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}-\x{ffff}0-9]-*)*[a-z\x{00a1}-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}-\x{ffff}]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$_iuS';
+
+        return preg_match($regex, $url) === 1;
+    }
+
+    /**
+     * @param $data
+     * @param $field
+     * @param bool $required
+     * @return string
+     * @throws ValidationException
+     */
+    public static function validate_country_code($data, $field, $required=true) {
+        if(isset($data[$field]) && is_string($data[$field])) {
+            $code = $data[$field];
+            $countries = Zend_Locale::getTranslationList('territory', i18n::get_locale(), 2);
+            if(!array_key_exists(strtoupper($code), $countries)) {
+                throw new ValidationException("No valid country code given");
             }
-            return true;
-        } else {
-            return false;
+            return $code;
+        } else if($required) {
+            throw new ValidationException("No $field given, but $field is required");
+        }
+    }
+
+    /**
+     * @param $data
+     * @param $field
+     * @param bool $required
+     * @return string
+     * @throws ValidationException
+     */
+    public static function validate_email($data, $field, $required=true) {
+        if(isset($data[$field]) && is_string($data[$field])) {
+            $email = $data[$field];
+            if(Email::is_valid_address($email) === 0) {
+                throw new ValidationException("No valid email given");
+            }
+            return $email;
+        } else if($required) {
+            throw new ValidationException("No $field given, but $field is required");
         }
     }
 }
