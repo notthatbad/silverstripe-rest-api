@@ -6,16 +6,23 @@
 class RestValidatorHelper {
     const DefaultMaxLength = 1600;
     const PHP_INT_MIN = -2147483648;
+
     /**
      * @param array $data the data from the request
      * @param string $field the field, that should be checked
-     * @param bool $required
-     * @param int $maxLength
-     * @param int $minLength
+     * @param array $options
      * @return string
      * @throws ValidationException
      */
-    public static function validate_string($data, $field, $required=true, $maxLength=self::DefaultMaxLength, $minLength=0) {
+    public static function validate_string($data, $field, $options=[]) {
+        $options = array_merge([
+            'required' => true,
+            'min' => 0,
+            'max' => self::DefaultMaxLength
+        ], $options);
+        $required = $options['required'];
+        $minLength = $options['min'];
+        $maxLength = $options['max'];
         if(isset($data[$field]) && is_string($data[$field])) {
             $string = $data[$field];
             // TODO: maybe the converting should not be made in validator
@@ -35,13 +42,19 @@ class RestValidatorHelper {
     /**
      * @param $data
      * @param $field
-     * @param bool $required
-     * @param int $max
-     * @param int $min
+     * @param array $options
      * @return int
      * @throws ValidationException
      */
-    public static function validate_int($data, $field, $required=true, $max=PHP_INT_MAX, $min=self::PHP_INT_MIN) {
+    public static function validate_int($data, $field, $options=[]) {
+        $options = array_merge([
+            'required' => true,
+            'min' => self::PHP_INT_MIN,
+            'max' => PHP_INT_MAX
+        ], $options);
+        $required = $options['required'];
+        $min = $options['min'];
+        $max = $options['max'];
         if(isset($data[$field]) && is_numeric($data[$field])) {
             $int = (int) $data[$field];
 
@@ -58,15 +71,22 @@ class RestValidatorHelper {
     /**
      * @param $data
      * @param $field
-     * @param bool $required
+     * @param array $options
      * @return string
      * @throws ValidationException
      */
-    public static function validate_date($data, $field, $required=true) {
+    public static function validate_datetime($data, $field, $options=[]) {
+        $options = array_merge([
+            'required' => true
+        ], $options);
+        $required = $options['required'];
         if(isset($data[$field]) && is_string($data[$field])) {
             $date = $data[$field];
             $dateTime = new SS_Datetime();
             $dateTime->setValue($date);
+            if(!$dateTime->getValue()) {
+                throw new ValidationException("No valid datetime given.");
+            }
 
             return $dateTime->Format('Y-m-d H:i:s');
         } else if($required) {
@@ -77,11 +97,15 @@ class RestValidatorHelper {
     /**
      * @param $data
      * @param $field
-     * @param bool $required
+     * @param array $options
      * @return string
      * @throws ValidationException
      */
-    public static function validate_url($data, $field, $required=true) {
+    public static function validate_url($data, $field, $options=[]) {
+        $options = array_merge([
+            'required' => true
+        ], $options);
+        $required = $options['required'];
         if(isset($data[$field]) && is_string($data[$field])) {
             $url = $data[$field];
             if(!self::is_url($url)) {
@@ -111,11 +135,15 @@ class RestValidatorHelper {
     /**
      * @param $data
      * @param $field
-     * @param bool $required
+     * @param array $options
      * @return string
      * @throws ValidationException
      */
-    public static function validate_country_code($data, $field, $required=true) {
+    public static function validate_country_code($data, $field, $options=[]) {
+        $options = array_merge([
+            'required' => true
+        ], $options);
+        $required = $options['required'];
         if(isset($data[$field]) && is_string($data[$field])) {
             $code = $data[$field];
             $countries = Zend_Locale::getTranslationList('territory', i18n::get_locale(), 2);
@@ -131,11 +159,15 @@ class RestValidatorHelper {
     /**
      * @param $data
      * @param $field
-     * @param bool $required
+     * @param array $options
      * @return string
      * @throws ValidationException
      */
-    public static function validate_email($data, $field, $required=true) {
+    public static function validate_email($data, $field, $options=[]) {
+        $options = array_merge([
+            'required' => true
+        ], $options);
+        $required = $options['required'];
         if(isset($data[$field]) && is_string($data[$field])) {
             $email = $data[$field];
             if(Email::is_valid_address($email) === 0) {

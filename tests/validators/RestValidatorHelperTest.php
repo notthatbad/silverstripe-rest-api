@@ -100,7 +100,7 @@ class RestValidatorHelperTest extends SapphireTest {
 
     public function testValidateCountryCode() {
         $this->assertEquals('US', RestValidatorHelper::validate_country_code(['cc' => 'US'], 'cc'));
-        $this->assertEquals(null, RestValidatorHelper::validate_country_code([], 'cc', false));
+        $this->assertEquals(null, RestValidatorHelper::validate_country_code([], 'cc', ['required' => false]));
 
         $this->assertException(function() {
             RestValidatorHelper::validate_country_code(['cc' => 'FOO'], 'cc');
@@ -117,7 +117,7 @@ class RestValidatorHelperTest extends SapphireTest {
             RestValidatorHelper::validate_email(['mail' => 'FOO'], 'mail');
         }, 'ValidationException');
 
-        $this->assertEquals(null, RestValidatorHelper::validate_email([], 'mail', false));
+        $this->assertEquals(null, RestValidatorHelper::validate_email([], 'mail', ['required' => false]));
         $this->assertException(function() {
             RestValidatorHelper::validate_email([], 'mail');
         }, 'ValidationException');
@@ -130,9 +130,74 @@ class RestValidatorHelperTest extends SapphireTest {
             RestValidatorHelper::validate_url(['url' => 'FOO'], 'url');
         }, 'ValidationException');
 
-        $this->assertEquals(null, RestValidatorHelper::validate_url([], 'url', false));
+        $this->assertEquals(null, RestValidatorHelper::validate_url([], 'url', ['required' => false]));
         $this->assertException(function() {
             RestValidatorHelper::validate_url([], 'url');
+        }, 'ValidationException');
+    }
+
+
+    public function testValidateString() {
+        $this->assertEquals('foo bar', RestValidatorHelper::validate_string(['str' => 'foo bar'], 'str'));
+        $this->assertEquals(null, RestValidatorHelper::validate_string([], 'str', ['required' => false]));
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_string([], 'str');
+        }, 'ValidationException');
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_string(['str' => 15], 'str');
+        }, 'ValidationException');
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_string(['str' => 'foo bar'], 'str', ['max' => 4]);
+        }, 'ValidationException');
+        $this->assertEquals('foo', RestValidatorHelper::validate_string(['str' => 'foo'], 'str'), ['max' => 4]);
+
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_string(['str' => 'fo'], 'str', ['min' => 3, 'max' => 4]);
+        }, 'ValidationException');
+        $this->assertEquals('foo', RestValidatorHelper::validate_string(['str' => 'foo'], 'str', ['min' => 2, 'max' => 4]));
+    }
+
+
+    public function testValidateInt() {
+        $this->assertEquals(5, RestValidatorHelper::validate_int(['int' => 5], 'int'));
+        $this->assertEquals(null, RestValidatorHelper::validate_int([], 'int', ['required' => false]));
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_int([], 'int');
+        }, 'ValidationException');
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_int(['int' => 'foo bar'], 'int');
+        }, 'ValidationException');
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_int(['int' => 5], 'int', ['max' => 4]);
+        }, 'ValidationException');
+        $this->assertEquals(-5, RestValidatorHelper::validate_int(['int' => -5], 'int', ['max' => 0]));
+
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_int(['int' => 1], 'int', ['min' => 3, 'max' => 4]);
+        }, 'ValidationException');
+        $this->assertEquals(2, RestValidatorHelper::validate_int(['int' => 2], 'int', ['min' => 2, 'max' => 4]));
+        $this->assertEquals(4, RestValidatorHelper::validate_int(['int' => 4], 'int', ['min' => 2, 'max' => 4]));
+    }
+
+
+    public function testValidateDatetime() {
+        $this->assertEquals('2015-08-07 12:13:14', RestValidatorHelper::validate_datetime(['date' => '2015-08-07 12:13:14'], 'date'));
+        $this->assertEquals(null, RestValidatorHelper::validate_datetime([], 'date', ['required' => false]));
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_datetime([], 'date');
+        }, 'ValidationException');
+
+        $this->assertException(function() {
+            RestValidatorHelper::validate_datetime(['date' => 'error'], 'date');
         }, 'ValidationException');
     }
 
