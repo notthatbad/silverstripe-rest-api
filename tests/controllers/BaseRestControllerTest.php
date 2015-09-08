@@ -16,38 +16,38 @@ class BaseRestControllerTest extends RestTest {
     }
 
     public function testControllerGET() {
-        $result = $this->makeApiRequest('RestTestRoute', 'GET');
+        $result = $this->makeApiRequest('RestTestRoute');
 
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test GET', $result['message']);
     }
 
     public function testControllerDELETE() {
-        $result = $this->makeApiRequest('RestTestRoute', 'DELETE');
+        $result = $this->makeApiRequest('RestTestRoute', ['method' => 'DELETE']);
 
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test DELETE', $result['message']);
     }
 
     public function testControllerPOST() {
-        $result = $this->makeApiRequest('RestTestRoute', 'POST');
+        $result = $this->makeApiRequest('RestTestRoute', ['method' => 'POST']);
 
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test POST', $result['message']);
     }
 
     public function testControllerPUT() {
-        $result = $this->makeApiRequest('RestTestRoute', 'PUT');
+        $result = $this->makeApiRequest('RestTestRoute', ['method' => 'PUT']);
 
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test PUT', $result['message']);
     }
 
     public function testUnsupportedMethods() {
-        $this->makeApiRequest('RestTestRoute', 'OPTIONS', null, 404);
-        $this->makeApiRequest('RestTestRoute', 'TRACE', null, 404);
-        $this->makeApiRequest('RestTestRoute', 'CONNECT', null, 404);
-        $this->makeApiRequest('RestTestRoute', 'HEAD', null, 404);
+        $this->makeApiRequest('RestTestRoute', ['method' => 'OPTIONS', 'code' => 404]);
+        $this->makeApiRequest('RestTestRoute', ['method' => 'TRACE', 'code' => 404]);
+        $this->makeApiRequest('RestTestRoute', ['method' => 'CONNECT', 'code' => 404]);
+        $this->makeApiRequest('RestTestRoute', ['method' => 'HEAD', 'code' => 404]);
     }
 
 }
