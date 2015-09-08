@@ -62,9 +62,13 @@ class BaseRestController extends Controller {
         $serializer = SerializerFactory::create_from_request($request);
 
         try {
-            if(!$this->hasMethod($action)) {
+            if(!$this->hasAction($action)) {
                 // method couldn't found on controller
                 throw new RestUserException("Action '$action' isn't available on class $className.", 404);
+            }
+
+            if(!$this->checkAccessAction($action)) {
+                throw new RestUserException("Action '$action' isn't allowed on class $className.", 404);
             }
 
             $res = $this->extend('beforeCallActionHandler', $request, $action);
@@ -156,5 +160,9 @@ class BaseRestController extends Controller {
             $method = $request->httpMethod();
         }
         return strtolower($method);
+    }
+
+    protected function isLoggedIn() {
+        return Member::currentUserID() != 0;
     }
 }

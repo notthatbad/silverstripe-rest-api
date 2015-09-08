@@ -54,6 +54,13 @@ class BaseRestControllerTest extends RestTest {
 
 class TestController extends BaseRestController implements TestOnly {
 
+    private static $allowed_actions = array (
+        'post' => true,
+        'delete' => true,
+        'get' => true,
+        'put' => true
+    );
+
     public function get() {
         return ['message' => 'Test GET'];
     }
