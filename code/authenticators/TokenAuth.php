@@ -1,15 +1,11 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: squad
- * Date: 08.09.15
- * Time: 17:39
+ * Authentication mechanism using a token in the request header. Valid tokens are saved in
  */
 class TokenAuth extends Object implements IAuth {
 
     public static function authenticate($email, $password) {
-        // auth
         $authenticator = new \MemberAuthenticator();
         if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
             // create session
@@ -25,10 +21,6 @@ class TokenAuth extends Object implements IAuth {
         }
     }
 
-    /**
-     * @param SS_HTTPRequest $request
-     * @return mixed
-     */
     public static function delete($request) {
         $token = $request->getHeader('Authorization');
         if (!$token)  {
@@ -39,11 +31,6 @@ class TokenAuth extends Object implements IAuth {
         $cache->remove($token);
     }
 
-    /**
-     * @param SS_HTTPRequest $request
-     * @return Member
-     * @throws RestUserException
-     */
     public static function current($request) {
         // get the token from header
         $token = $request->getHeader('Authorization');
@@ -60,7 +47,9 @@ class TokenAuth extends Object implements IAuth {
     }
 
     /**
-     * @param $token
+     * 
+     *
+     * @param string $token
      * @throws RestUserException
      * @return Member
      */

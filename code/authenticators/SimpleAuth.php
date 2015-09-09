@@ -1,16 +1,10 @@
 <?php
 
 /**
- *
+ * Authentication mechanism which uses the internal Silverstripe authentication (session based).
  */
 class SimpleAuth extends Object implements IAuth {
 
-
-    /**
-     * @param string $email
-     * @param string $password
-     * @return \Ntb\Session
-     */
     public static function authenticate($email, $password) {
         // auth
         $authenticator = new \MemberAuthenticator();
@@ -25,17 +19,13 @@ class SimpleAuth extends Object implements IAuth {
         }
     }
 
-    /**
-     * @param $request
-     * @return mixed
-     * @throws RestUserException
-     */
     public static function delete($request) {
         $user = Member::currentUser();
         if(!$user) {
             throw new RestUserException("No session found", 404);
         }
         $user->logOut();
+        return true;
     }
 
 
