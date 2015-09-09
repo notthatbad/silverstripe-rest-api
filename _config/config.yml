@@ -1,4 +1,16 @@
+---
+Name: rest_api
+After:
+  - 'framework/*'
+  - 'cms/*'
+---
 AuthFactory:
   AuthType: TokenAuth
 TokenAuth:
   DevToken: foobarbaz
+BaseRestController:
+  CORSOrigin: '*'
+  CORSMethods: 'GET, PUT, POST, DELETE, OPTIONS'
+  CORSMaxAge: '1000'
+  CORSAllowHeaders: 'Content-Type, Authorization, X-Requested-With'
+  Owner: Member

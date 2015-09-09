@@ -10,8 +10,9 @@ class SimpleAuth extends Object implements IAuth {
         $authenticator = new \MemberAuthenticator();
         if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
             $user->logIn();
+            $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($user->ID);
             // create session
-            $session = \Ntb\Session::create();
+            $session = ApiSession::create();
             $session->User = $user;
             $session->Token = AuthFactory::generate_token($user);
 
@@ -20,16 +21,21 @@ class SimpleAuth extends Object implements IAuth {
     }
 
     public static function delete($request) {
-        $user = Member::currentUser();
-        if(!$user) {
+        $owner = self::current($request);
+        if(!$owner) {
             throw new RestUserException("No session found", 404);
         }
-        $user->logOut();
+        $owner->logOut();
         return true;
     }
 
 
+    /**
+     * @param SS_HTTPRequest $request
+     * @return Member
+     */
     public static function current($request) {
-        return Member::currentUser();
+        $id = Member::currentUserID();
+        return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
     }
 }

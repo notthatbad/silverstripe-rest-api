@@ -8,7 +8,7 @@ interface IAuth {
     /**
      * @param string $email the email of the
      * @param string $password
-     * @return \Ntb\Session
+     * @return \Ntb\ApiSession
      */
     public static function authenticate($email, $password);
 

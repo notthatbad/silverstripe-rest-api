@@ -60,6 +60,7 @@ class BaseRestController extends Controller {
         $className = get_class($this);
         // create serializer
         $serializer = SerializerFactory::create_from_request($request);
+        $response = $this->getResponse();
 
         try {
             if(!$this->hasAction($action)) {
@@ -83,16 +84,9 @@ class BaseRestController extends Controller {
             }
 
             // set content type
-            $this->getResponse()->addHeader('Content-Type', $serializer->contentType());
-            $this->getResponse()->addHeader('Access-Control-Allow-Origin', '*');
-            $this->getResponse()->addHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-            $this->getResponse()->addHeader('Access-Control-Max-Age', '1000');
-            $this->getResponse()->addHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-
-            return $serializer->serialize($actionRes);
+            $body = $actionRes;
         } catch(RestUserException $ex) {
             // a user exception was caught
-            $response = $this->getResponse();
             $response->setStatusCode("404");
 
             $body = [
@@ -100,17 +94,8 @@ class BaseRestController extends Controller {
                 'code' => $ex->getCode()
             ];
 
-            $response->setBody($serializer->serialize($body));
-
-            $response->addHeader('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
-            $response->addHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-            $response->addHeader('Access-Control-Max-Age', '1000');
-            $response->addHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-
-            return $response;
         } catch(RestSystemException $ex) {
             // a system exception was caught
-            $response = $this->getResponse();
             $response->addHeader('Content-Type', $serializer->contentType());
             $response->setStatusCode("500");
 
@@ -126,18 +111,8 @@ class BaseRestController extends Controller {
                     'trace' => $ex->getTrace()
                 ]);
             }
-
-            $response->setBody($serializer->serialize($body));
-
-            $response->addHeader('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
-            $response->addHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-            $response->addHeader('Access-Control-Max-Age', '1000');
-            $response->addHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-
-            return $response;
         } catch(Exception $ex) {
             // an unexpected exception was caught
-            $response = $this->getResponse();
             $response->addHeader('Content-Type', $serializer->contentType());
             $response->setStatusCode("500");
 
@@ -152,18 +127,17 @@ class BaseRestController extends Controller {
                     'line' => $ex->getLine(),
                     'trace' => $ex->getTrace()
                 ]);
-            }   
-
-            $response->setBody($serializer->serialize($body));
-
-            $response->addHeader('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
-            $response->addHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-            $response->addHeader('Access-Control-Max-Age', '1000');
-            $response->addHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-
-
-            return $response;
+            }
         }
+
+        $response->setBody($serializer->serialize($body));
+        // set CORS header from config
+        $response->addHeader('Access-Control-Allow-Origin', Config::inst()->get('BaseRestController', 'CORSOrigin'));
+        $response->addHeader('Access-Control-Allow-Methods', Config::inst()->get('BaseRestController', 'CORSMethods'));
+        $response->addHeader('Access-Control-Max-Age', Config::inst()->get('BaseRestController', 'CORSMaxAge'));
+        $response->addHeader('Access-Control-Allow-Headers', Config::inst()->get('BaseRestController', 'CORSAllowHeaders'));
+
+        return $response;
     }
 
     /**
