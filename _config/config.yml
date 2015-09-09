@@ -1,4 +1,13 @@
+---
+Name: rest_api
+After:
+  - 'framework/*'
+  - 'cms/*'
+---
 AuthFactory:
   AuthType: TokenAuth
 TokenAuth:
   DevToken: foobarbaz
+BaseRestController:
+  CORS: 1
+  Owner: Member
