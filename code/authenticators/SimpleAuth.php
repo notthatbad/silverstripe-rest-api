@@ -3,7 +3,7 @@
 /**
  *
  */
-class SimpleAuth  implements IAuth {
+class SimpleAuth extends Object implements IAuth {
 
 
     /**
@@ -19,7 +19,7 @@ class SimpleAuth  implements IAuth {
             // create session
             $session = \Ntb\Session::create();
             $session->User = $user;
-            $session->Token = self::generateToken();
+            $session->Token = AuthFactory::generate_token($user);
 
             return $session;
         }
@@ -31,23 +31,15 @@ class SimpleAuth  implements IAuth {
      * @throws RestUserException
      */
     public static function delete($request) {
-        if($id = $request->param('ID')) {
-            $user = Member::currentUser();
-            if(!$user || $id != 'me') {
-                throw new RestUserException("No session found", 404);
-            }
-            $user->logOut();
-        } else {
-            throw new RestUserException("No id specified for deletion", 404);
+        $user = Member::currentUser();
+        if(!$user) {
+            throw new RestUserException("No session found", 404);
         }
+        $user->logOut();
     }
 
 
     public static function current($request) {
         return Member::currentUser();
-    }
-
-    private static function generateToken() {
-        return "token1";
     }
 }

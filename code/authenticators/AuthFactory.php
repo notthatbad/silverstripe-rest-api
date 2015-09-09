@@ -20,4 +20,19 @@ class AuthFactory extends Object {
 
         throw new RestSystemException("Configured auth type '$type' not supported", 404);
     }
+
+    /**
+     * Generates an encrypted random token.
+     * @param Member $user
+     * @throws PasswordEncryptor_NotFoundException
+     * @return string
+     */
+    public static function generate_token($user) {
+        $generator = new RandomGenerator();
+        $tokenString = $generator->randomToken();
+        $e = PasswordEncryptor::create_for_algorithm('blowfish');
+        $salt = $e->salt($tokenString);
+        $token = sha1($e->encrypt($tokenString, $salt)) . substr(md5($user->Created.$user->LastEdited.$user->ID), 7);
+        return $token;
+    }
 }

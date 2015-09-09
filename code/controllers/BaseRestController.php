@@ -88,7 +88,6 @@ class BaseRestController extends Controller {
         } catch(RestUserException $ex) {
             // a user exception was caught
             $response = $this->getResponse();
-            $response->addHeader('Content-Type', $serializer->contentType());
             $response->setStatusCode("404");
 
             $body = [
@@ -163,6 +162,6 @@ class BaseRestController extends Controller {
     }
 
     protected function isLoggedIn() {
-        return Member::currentUserID() != 0;
+        return AuthFactory::createAuth()->current($this->request);
     }
 }
