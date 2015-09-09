@@ -159,7 +159,7 @@ class BaseRestController extends Controller {
         return strtolower($method);
     }
 
-    protected function isLoggedIn() {
+    protected function isAuthenticated() {
         return AuthFactory::createAuth()->current($this->request);
     }
 }

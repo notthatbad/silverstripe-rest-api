@@ -104,7 +104,7 @@ class SessionControllerTest extends RestTest {
 class TestSessionController extends BaseRestController implements TestOnly {
 
     private static $allowed_actions = array (
-        'get' => '->isLoggedIn'
+        'get' => '->isAuthenticated'
     );
 
     public function get() {
