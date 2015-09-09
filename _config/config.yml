@@ -9,5 +9,8 @@ AuthFactory:
 TokenAuth:
   DevToken: foobarbaz
 BaseRestController:
-  CORS: 1
+  CORSOrigin: '*'
+  CORSMethods: 'GET, PUT, POST, DELETE, OPTIONS'
+  CORSMaxAge: '1000'
+  CORSAllowHeaders: 'Content-Type, Authorization, X-Requested-With'
   Owner: Member
