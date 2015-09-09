@@ -6,10 +6,10 @@
 class TokenAuth extends Object implements IAuth {
 
     public static function authenticate($email, $password) {
-        $authenticator = new \MemberAuthenticator();
+        $authenticator = new MemberAuthenticator();
         if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
             // create session
-            $session = \Ntb\Session::create();
+            $session = ApiSession::create();
             $session->User = $user;
             $session->Token = AuthFactory::generate_token($user);
 
@@ -59,15 +59,15 @@ class TokenAuth extends Object implements IAuth {
         if($data = $cache->load($token)) {
             $data = json_decode($data, true);
             $id = (int)$data['user'];
-            $user = Member::get()->byID($id);
+            $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
             if(!$user) {
-                throw new RestUserException("User not found in database", 404);
+                throw new RestUserException("Owner not found in database", 404);
             }
             return $user;
         } else if(Director::isDev() && $token == Config::inst()->get('TokenAuth', 'DevToken')) {
-            return \Ntb\User::get()->first();
+            return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->first();
         }
-        throw new RestUserException("User not found in database", 404);
+        throw new RestUserException("Owner not found in database", 404);
     }
 
 }

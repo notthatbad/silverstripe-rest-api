@@ -36,7 +36,7 @@ class RestTest extends FunctionalTest {
      *  * string `body` the data
      *  * int `code` the expected response code
      *  * string `method` the http method
-     *  * Session `session` the test session
+     *  * ApiSession `session` the test session
      * @return array
      * @throws SS_HTTPResponse_Exception
      */
