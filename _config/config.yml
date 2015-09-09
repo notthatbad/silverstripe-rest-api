@@ -1,0 +1,4 @@
+AuthFactory:
+  AuthType: TokenAuth
+TokenAuth:
+  DevToken: foobarbaz
