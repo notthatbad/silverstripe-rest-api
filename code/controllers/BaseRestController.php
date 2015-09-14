@@ -40,6 +40,23 @@ class BaseRestController extends Controller {
             return static::$default_limit;
         }
     }
+
+    /**
+     * @todo refactor
+     */
+    public function init() {
+        parent::init();
+
+        if ($this->request->httpMethod() === 'OPTIONS' ) {
+            $response = $this->getResponse();
+            // set CORS header from config
+            $response = $this->addCORSHeaders($response);
+
+            $response->output();
+            exit;
+        }
+    }
+
     /**
      * handleAction implementation for rest controllers. This handles the requested action differently then the standard
      * implementation.
@@ -132,10 +149,7 @@ class BaseRestController extends Controller {
 
         $response->setBody($serializer->serialize($body));
         // set CORS header from config
-        $response->addHeader('Access-Control-Allow-Origin', Config::inst()->get('BaseRestController', 'CORSOrigin'));
-        $response->addHeader('Access-Control-Allow-Methods', Config::inst()->get('BaseRestController', 'CORSMethods'));
-        $response->addHeader('Access-Control-Max-Age', Config::inst()->get('BaseRestController', 'CORSMaxAge'));
-        $response->addHeader('Access-Control-Allow-Headers', Config::inst()->get('BaseRestController', 'CORSAllowHeaders'));
+        $response = $this->addCORSHeaders($response);
 
         return $response;
     }
@@ -174,5 +188,14 @@ class BaseRestController extends Controller {
     protected function isAdmin() {
         $member = AuthFactory::createAuth()->current($this->request);
         return $member && Permission::checkMember($member, 'ADMIN');
+    }
+
+    protected function addCORSHeaders($response) {
+        $response->addHeader('Access-Control-Allow-Origin', Config::inst()->get('BaseRestController', 'CORSOrigin'));
+        $response->addHeader('Access-Control-Allow-Methods', Config::inst()->get('BaseRestController', 'CORSMethods'));
+        $response->addHeader('Access-Control-Max-Age', Config::inst()->get('BaseRestController', 'CORSMaxAge'));
+        $response->addHeader('Access-Control-Allow-Headers', Config::inst()->get('BaseRestController', 'CORSAllowHeaders'));
+
+        return $response;
     }
 }
