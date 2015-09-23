@@ -2,11 +2,11 @@
 
 SS_Cache::add_backend(
     'session_cache',
-    'Memcached',
+    'Redis',
     array(
         'servers' => array(
             'host' => 'localhost',
-            'port' => 11211,
+            'port' => 6379,
             'persistent' => true,
             'weight' => 1,
             'timeout' => 5,
