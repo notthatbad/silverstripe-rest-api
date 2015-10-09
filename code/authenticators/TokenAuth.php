@@ -14,7 +14,7 @@ class TokenAuth extends Object implements IAuth {
             $session->Token = AuthFactory::generate_token($user);
 
             // save session
-            $cache = SS_Cache::factory('session_cache');
+            $cache = SS_Cache::factory('rest_cache');
             $cache->save(json_encode(['token' => $session->Token, 'user' => $session->User->ID]), $session->Token);
 
             return $session;
@@ -27,7 +27,7 @@ class TokenAuth extends Object implements IAuth {
             // try variables
             $token = $request->requestVar('token');
         }
-        $cache = SS_Cache::factory('session_cache');
+        $cache = SS_Cache::factory('rest_cache');
         $cache->remove($token);
     }
 
@@ -54,7 +54,7 @@ class TokenAuth extends Object implements IAuth {
      * @return Member
      */
     private static function get_member_from_token($token) {
-        $cache = SS_Cache::factory('session_cache');
+        $cache = SS_Cache::factory('rest_cache');
 
         if($data = $cache->load($token)) {
             $data = json_decode($data, true);

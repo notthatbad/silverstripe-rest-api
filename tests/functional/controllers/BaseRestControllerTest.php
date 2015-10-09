@@ -42,14 +42,6 @@ class BaseRestControllerTest extends RestTest {
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test PUT', $result['message']);
     }
-
-    public function testUnsupportedMethods() {
-        $this->makeApiRequest('RestTestRoute', ['method' => 'OPTIONS', 'code' => 404]);
-        $this->makeApiRequest('RestTestRoute', ['method' => 'TRACE', 'code' => 404]);
-        $this->makeApiRequest('RestTestRoute', ['method' => 'CONNECT', 'code' => 404]);
-        $this->makeApiRequest('RestTestRoute', ['method' => 'HEAD', 'code' => 404]);
-    }
-
 }
 
 class TestController extends BaseRestController implements TestOnly {

@@ -24,7 +24,7 @@ class RestTest extends FunctionalTest {
         $this->defaultToken = Config::inst()->get('TokenAuth', 'DevToken');
 
         // clear cache
-        SS_Cache::factory('session_cache')->clean(Zend_Cache::CLEANING_MODE_ALL);
+        SS_Cache::factory('rest_cache')->clean(Zend_Cache::CLEANING_MODE_ALL);
     }
 
 
