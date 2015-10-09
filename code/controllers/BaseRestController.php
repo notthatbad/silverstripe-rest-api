@@ -173,8 +173,21 @@ class BaseRestController extends Controller {
         return strtolower($method);
     }
 
-    protected function isLoggedIn() {
-        return AuthFactory::createAuth()->current($this->request);
+    /**
+     * @return bool
+     * @throws RestSystemException
+     */
+    protected function isAuthenticated() {
+        return AuthFactory::createAuth()->current($this->request) ? true : false;
+    }
+
+    /**
+     * @return bool
+     * @throws RestSystemException
+     */
+    protected function isAdmin() {
+        $member = AuthFactory::createAuth()->current($this->request);
+        return $member && Permission::checkMember($member, 'ADMIN');
     }
 
     protected function addCORSHeaders($response) {
