@@ -102,10 +102,10 @@ class RestValidatorHelperTest extends SapphireTest {
         $this->assertEquals('US', RestValidatorHelper::validate_country_code(['cc' => 'US'], 'cc'));
         $this->assertEquals(null, RestValidatorHelper::validate_country_code([], 'cc', ['required' => false]));
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_country_code(['cc' => 'FOO'], 'cc');
         }, 'ValidationException');
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_country_code([], 'cc');
         }, 'ValidationException');
     }
@@ -113,12 +113,12 @@ class RestValidatorHelperTest extends SapphireTest {
     public function testValidateEmail() {
         $this->assertEquals('j@d.com', RestValidatorHelper::validate_email(['mail' => 'j@d.com'], 'mail'));
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_email(['mail' => 'FOO'], 'mail');
         }, 'ValidationException');
 
         $this->assertEquals(null, RestValidatorHelper::validate_email([], 'mail', ['required' => false]));
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_email([], 'mail');
         }, 'ValidationException');
     }
@@ -126,12 +126,12 @@ class RestValidatorHelperTest extends SapphireTest {
     public function testValidateUrl() {
         $this->assertEquals('http://test.com', RestValidatorHelper::validate_url(['url' => 'http://test.com'], 'url'));
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_url(['url' => 'FOO'], 'url');
         }, 'ValidationException');
 
         $this->assertEquals(null, RestValidatorHelper::validate_url([], 'url', ['required' => false]));
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_url([], 'url');
         }, 'ValidationException');
     }
@@ -141,21 +141,21 @@ class RestValidatorHelperTest extends SapphireTest {
         $this->assertEquals('foo bar', RestValidatorHelper::validate_string(['str' => 'foo bar'], 'str'));
         $this->assertEquals(null, RestValidatorHelper::validate_string([], 'str', ['required' => false]));
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_string([], 'str');
         }, 'ValidationException');
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_string(['str' => 15], 'str');
         }, 'ValidationException');
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_string(['str' => 'foo bar'], 'str', ['max' => 4]);
         }, 'ValidationException');
         $this->assertEquals('foo', RestValidatorHelper::validate_string(['str' => 'foo'], 'str'), ['max' => 4]);
 
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_string(['str' => 'fo'], 'str', ['min' => 3, 'max' => 4]);
         }, 'ValidationException');
         $this->assertEquals('foo', RestValidatorHelper::validate_string(['str' => 'foo'], 'str', ['min' => 2, 'max' => 4]));
@@ -166,21 +166,21 @@ class RestValidatorHelperTest extends SapphireTest {
         $this->assertEquals(5, RestValidatorHelper::validate_int(['int' => 5], 'int'));
         $this->assertEquals(null, RestValidatorHelper::validate_int([], 'int', ['required' => false]));
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_int([], 'int');
         }, 'ValidationException');
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_int(['int' => 'foo bar'], 'int');
         }, 'ValidationException');
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_int(['int' => 5], 'int', ['max' => 4]);
         }, 'ValidationException');
         $this->assertEquals(-5, RestValidatorHelper::validate_int(['int' => -5], 'int', ['max' => 0]));
 
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_int(['int' => 1], 'int', ['min' => 3, 'max' => 4]);
         }, 'ValidationException');
         $this->assertEquals(2, RestValidatorHelper::validate_int(['int' => 2], 'int', ['min' => 2, 'max' => 4]));
@@ -192,55 +192,13 @@ class RestValidatorHelperTest extends SapphireTest {
         $this->assertEquals('2015-08-07 12:13:14', RestValidatorHelper::validate_datetime(['date' => '2015-08-07 12:13:14'], 'date'));
         $this->assertEquals(null, RestValidatorHelper::validate_datetime([], 'date', ['required' => false]));
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_datetime([], 'date');
         }, 'ValidationException');
 
-        $this->assertException(function() {
+        TestHelper::assertException(function() {
             RestValidatorHelper::validate_datetime(['date' => 'error'], 'date');
         }, 'ValidationException');
-    }
-
-
-    /**
-     * @param callable $callback
-     * @param string $expectedException
-     * @param null $expectedCode
-     * @param null $expectedMessage
-     * @author VladaHejda
-     */
-    protected function assertException(callable $callback, $expectedException = 'Exception', $expectedCode = null, $expectedMessage = null) {
-        if (!ClassInfo::exists($expectedException)) {
-            $this->fail(sprintf('An exception of type "%s" does not exist.', $expectedException));
-        }
-        try {
-            $callback();
-        } catch (\Exception $e) {
-            $class = ClassInfo::class_name($e);
-            $message = $e->getMessage();
-            $code = $e->getCode();
-            $errorMessage = 'Failed asserting the class of exception';
-            if ($message && $code) {
-                $errorMessage .= sprintf(' (message was %s, code was %d)', $message, $code);
-            } elseif ($code) {
-                $errorMessage .= sprintf(' (code was %d)', $code);
-            }
-            $errorMessage .= '.';
-            $this->assertInstanceOf($expectedException, $e, $errorMessage);
-            if ($expectedCode !== null) {
-                $this->assertEquals($expectedCode, $code, sprintf('Failed asserting code of thrown %s.', $class));
-            }
-            if ($expectedMessage !== null) {
-                $this->assertContains($expectedMessage, $message, sprintf('Failed asserting the message of thrown %s.', $class));
-            }
-            return;
-        }
-        $errorMessage = 'Failed asserting that exception';
-        if (strtolower($expectedException) !== 'exception') {
-            $errorMessage .= sprintf(' of type %s', $expectedException);
-        }
-        $errorMessage .= ' was thrown.';
-        $this->fail($errorMessage);
     }
 
 }
