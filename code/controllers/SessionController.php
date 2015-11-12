@@ -7,7 +7,7 @@ class SessionController extends BaseRestController {
 
     private static $allowed_actions = array (
         'post' => true,
-        'delete' => '->isLoggedIn'
+        'delete' => '->isAuthenticated'
     );
 
     /**
