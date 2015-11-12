@@ -105,22 +105,22 @@ class BaseRestController extends Controller {
         } catch(RestUserException $ex) {
             // a user exception was caught
             $response->setStatusCode("404");
-
+            SS_Log::log($ex->getMessage(), SS_Log::INFO);
             $body = [
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
             ];
-
+            SS_Log::log(
+                json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
+                SS_Log::INFO);
         } catch(RestSystemException $ex) {
             // a system exception was caught
             $response->addHeader('Content-Type', $serializer->contentType());
             $response->setStatusCode("500");
-
             $body = [
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
             ];
-
             if(Director::isDev()) {
                 $body = array_merge($body, [
                     'file' => $ex->getFile(),
@@ -128,16 +128,17 @@ class BaseRestController extends Controller {
                     'trace' => $ex->getTrace()
                 ]);
             }
+            SS_Log::log(
+                json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
+                SS_Log::WARN);
         } catch(Exception $ex) {
             // an unexpected exception was caught
             $response->addHeader('Content-Type', $serializer->contentType());
             $response->setStatusCode("500");
-
             $body = [
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
             ];
-
             if(Director::isDev()) {
                 $body = array_merge($body, [
                     'file' => $ex->getFile(),
@@ -145,6 +146,10 @@ class BaseRestController extends Controller {
                     'trace' => $ex->getTrace()
                 ]);
             }
+            SS_Log::log(
+                json_encode(array_merge(
+                    $body, ['file' => $ex->getFile(), 'line' => $ex->getLine(),'trace' => $ex->getTrace()])),
+                SS_Log::ERR);
         }
 
         $response->setBody($serializer->serialize($body));
