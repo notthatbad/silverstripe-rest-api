@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Authentication mechanism using a token in the request header. Valid tokens are saved in
+ * Authentication mechanism using a token in the request header. Valid tokens are saved in cache.
  */
 class TokenAuth extends Object implements IAuth {
 
