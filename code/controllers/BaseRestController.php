@@ -186,7 +186,7 @@ class BaseRestController extends Controller {
      * @throws RestSystemException
      */
     protected function isAuthenticated() {
-        return AuthFactory::createAuth()->current($this->request) ? true : false;
+        return $this->currentUser() ? true : false;
     }
 
     /**
@@ -194,7 +194,7 @@ class BaseRestController extends Controller {
      * @throws RestSystemException
      */
     protected function isAdmin() {
-        $member = AuthFactory::createAuth()->current($this->request);
+        $member = $this->currentUser();
         return $member && Permission::checkMember($member, 'ADMIN');
     }
 
@@ -205,5 +205,9 @@ class BaseRestController extends Controller {
         $response->addHeader('Access-Control-Allow-Headers', Config::inst()->get('BaseRestController', 'CORSAllowHeaders'));
 
         return $response;
+    }
+
+    protected function currentUser() {
+        return AuthFactory::createAuth()->current($this->request);
     }
 }
