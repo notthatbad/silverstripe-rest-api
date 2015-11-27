@@ -22,7 +22,6 @@ class RestTest extends FunctionalTest {
     public function setUp() {
         parent::setUp();
         $this->defaultToken = Config::inst()->get('TokenAuth', 'DevToken');
-
         // clear cache
         SS_Cache::factory('rest_cache')->clean(Zend_Cache::CLEANING_MODE_ALL);
     }
@@ -55,11 +54,10 @@ class RestTest extends FunctionalTest {
             $settings['method'],
             $settings['body'],
             [
-                'Authorization' => $settings['token'],
+                'Authorization' => "Bearer ".$settings['token'],
                 'Accept' => 'application/json'
             ]);
         $this->assertEquals($settings['code'], $response->getStatusCode(), "Wrong status code: {$response->getBody()}");
-
         return json_decode($response->getBody(), true);
     }
 }

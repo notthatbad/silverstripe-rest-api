@@ -20,10 +20,8 @@ class SessionController extends BaseRestController {
         if(!$data) {
             throw new RestUserException("No data for session provided.", 404);
         }
-
         try{
             $validated = SessionValidator::validate($data);
-
             $session = AuthFactory::createAuth()->authenticate($validated['Email'], $validated['Password']);
             if(!$session) {
                 throw new RestUserException("Login incorrect",404);
@@ -51,7 +49,6 @@ class SessionController extends BaseRestController {
     public function delete($request) {
         // check param for id
         $data = [];
-
         try {
             if($id = $request->param('ID')) {
                 if($id != 'me') {
@@ -66,7 +63,6 @@ class SessionController extends BaseRestController {
         } catch(Exception $e) {
             throw new RestUserException("ApiSession was not found", 404);
         }
-
         $meta = ['timestamp' => time()];
         $data['meta'] = $meta;
         return $data;
