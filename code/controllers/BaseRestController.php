@@ -6,18 +6,24 @@
 class BaseRestController extends Controller {
 
     /**
+     * The default limit.
+     * Can be overridden in children.
      * @var int
      */
     protected static $default_limit = 20;
 
     /**
+     * The default offset.
+     * Can be overridden in children.
      * @var int
      */
     protected static $default_offset = 0;
 
     /**
+     * Returns the offset, either given in request by `offset` or from the default settings in the controller.
+     *
      * @param SS_HTTPRequest $request
-     * @return int
+     * @return int the offset value
      */
     protected static function offset($request) {
         $offset = (int)$request->getVar('offset');
@@ -29,12 +35,14 @@ class BaseRestController extends Controller {
     }
 
     /**
+     * Returns the limit, either given in request by `limit` or from the default settings in the controller.
+     *
      * @param SS_HTTPRequest $request
-     * @return int
+     * @return int the limit value
      */
     protected static function limit($request) {
         $limit = (int)$request->getVar('limit');
-        if($limit && is_int($limit) && $limit >= 0) {
+        if($limit && is_int($limit) && $limit > 0) {
             return $limit;
         } else {
             return static::$default_limit;
@@ -42,16 +50,15 @@ class BaseRestController extends Controller {
     }
 
     /**
-     * @todo refactor
      */
     public function init() {
         parent::init();
-
+        // check for CORS options request
         if ($this->request->httpMethod() === 'OPTIONS' ) {
+            // create direct response without requesting any controller
             $response = $this->getResponse();
             // set CORS header from config
             $response = $this->addCORSHeaders($response);
-
             $response->output();
             exit;
         }
@@ -73,12 +80,11 @@ class BaseRestController extends Controller {
         $action = $this->getMethodName($request);
         $this->action = $action;
         $this->requestParams = $request->requestVars();
-
-        $className = get_class($this);
+        $className = $this->class;
         // create serializer
         $serializer = SerializerFactory::create_from_request($request);
         $response = $this->getResponse();
-
+        // perform action
         try {
             if(!$this->hasAction($action)) {
                 // method couldn't found on controller
@@ -99,13 +105,11 @@ class BaseRestController extends Controller {
             if ($res) {
                 return reset($res);
             }
-
             // set content type
             $body = $actionRes;
         } catch(RestUserException $ex) {
             // a user exception was caught
             $response->setStatusCode("404");
-            SS_Log::log($ex->getMessage(), SS_Log::INFO);
             $body = [
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
@@ -151,11 +155,10 @@ class BaseRestController extends Controller {
                     $body, ['file' => $ex->getFile(), 'line' => $ex->getLine(),'trace' => $ex->getTrace()])),
                 SS_Log::ERR);
         }
-
+        // serialize content and set body of response
         $response->setBody($serializer->serialize($body));
         // set CORS header from config
         $response = $this->addCORSHeaders($response);
-
         return $response;
     }
 
