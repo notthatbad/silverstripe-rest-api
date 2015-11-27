@@ -23,19 +23,23 @@ class JwtAuth extends Object implements IAuth {
     }
 
     public static function current($request) {
-        // get the token from header
-        $tokenStr = $request->getHeader('Authorization');
-        if ($tokenStr)  {
-            // string must have format: type token
-            $token = explode(' ', $tokenStr)[1];
-        } else {
-            // try variables
-            $token = $request->requestVar('token');
-        }
-        if($token) {
-            return self::get_member_from_token($token);
-        } else {
-            throw new RestUserException("No token was specified", 404);
+        try {
+            // get the token from header
+            $tokenStr = $request->getHeader('Authorization');
+            if ($tokenStr)  {
+                // string must have format: type token
+                $token = explode(' ', $tokenStr)[1];
+            } else {
+                // try variables
+                $token = $request->requestVar('token');
+            }
+            if($token) {
+                return self::get_member_from_token($token);
+            }
+        } catch(RestUserException $e) {
+            throw $e;
+        } catch(Exception $e) {
+            throw new RestUserException("Token can't be read or was not specified", 404);
         }
     }
 
@@ -47,9 +51,13 @@ class JwtAuth extends Object implements IAuth {
      * @return Member
      */
     private static function get_member_from_token($token) {
-        if($data = self::jwt_decode($token, self::get_key())) {
-            $data = json_decode($data, true);
-            $id = (int)$data['user'];
+        $data = self::jwt_decode($token, self::get_key());
+        if($data) {
+            // todo: check expire time
+            if(time() > $data['expire']) {
+                throw new RestUserException("Session expired", 404);
+            }
+            $id = (int)$data['userId'];
             $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
             if(!$user) {
                 throw new RestUserException("Owner not found in database", 404);
@@ -66,15 +74,15 @@ class JwtAuth extends Object implements IAuth {
      * @return string
      */
     private static function generate_token($user) {
+        $iat = time();
         $data = [
-            'iat' => time(),
+            'iat' => $iat,
             'jti' => AuthFactory::generate_token($user),
-            'iss' => 'ServerName',
-            'expire' => \Ntb\TimeDefinition::Day * 14,
+            'iss' => Config::inst()->get('JwtAuth', 'Issuer'),
+            'expire' => $iat + Config::inst()->get('JwtAuth', 'ExpireTime'),
             'userId' => $user->ID
         ];
         $key = self::get_key();
-
         return self::jwt_encode($data, $key);
     }
 
@@ -87,12 +95,12 @@ class JwtAuth extends Object implements IAuth {
         $header = ['typ' => 'JWT'];
         $headerEncoded = self::base64_url_encode(json_encode($header));
         $dataEncoded = self::base64_url_encode(json_encode($data));
-        $signature = hash_hmac('sha256', "$headerEncoded.$dataEncoded", $key);
+        $signature = hash_hmac(Config::inst()->get('JwtAuth', 'HashAlgorithm'), "$headerEncoded.$dataEncoded", $key);
         return "$headerEncoded.$dataEncoded.$signature";
     }
 
     private static function get_key() {
-        return "FooBar";
+        return Config::inst()->get('JwtAuth', 'Key');
     }
 
     /**
@@ -101,7 +109,12 @@ class JwtAuth extends Object implements IAuth {
      * @return array
      */
     public static function jwt_decode($token, $key) {
-
+        list($headerEncoded, $dataEncoded, $signature) = explode('.', $token);
+        $selfRun = hash_hmac(Config::inst()->get('JwtAuth', 'HashAlgorithm'), "$headerEncoded.$dataEncoded", $key);
+        if($selfRun === $signature) {
+            return json_decode(self::base64_url_decode($dataEncoded), true);
+        }
+        return false;
     }
 
     static function base64_url_encode($data) {

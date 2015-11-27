@@ -14,16 +14,16 @@ class JwtAuthTest extends SapphireTest {
             "admin" => true
         ];
         $result = JwtAuth::jwt_encode($data, "secret");
-        print_r($result);
         $this->assertEquals(
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.pcHcZspUvuiqIPVB_i_qmcvCJv63KLUgIAKIlXI1gY8",
+            "eyJ0eXAiOiJKV1QifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.2a2f70f937182a2daa5c1e79ed832899c3ebb14412b214c0cb0484b8199b64a2",
             $result
         );
     }
 
     public function testJwtDecode() {
-        $token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.pcHcZspUvuiqIPVB_i_qmcvCJv63KLUgIAKIlXI1gY8";
+        $token = "eyJ0eXAiOiJKV1QifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.2a2f70f937182a2daa5c1e79ed832899c3ebb14412b214c0cb0484b8199b64a2";
         $result = JwtAuth::jwt_decode($token, "secret");
+        var_dump($result);
         $this->assertEquals("1234567890", $result['sub']);
         $this->assertEquals(true, $result['admin']);
         $this->assertEquals("John Doe", $result['name']);

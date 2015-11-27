@@ -8,6 +8,11 @@ AuthFactory:
   AuthType: TokenAuth
 TokenAuth:
   DevToken: foobarbaz
+JwtAuth:
+  Key: LoremIpsum
+  HashAlgorithm: sha256
+  Issuer: "rest.ntb.dev"
+  ExpireTime: 1209600
 BaseRestController:
   CORSOrigin: '*'
   CORSMethods: 'GET, PUT, POST, DELETE, OPTIONS'
