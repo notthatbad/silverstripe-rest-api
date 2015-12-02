@@ -4,7 +4,7 @@
  * Rest test class can work as base class for your functional tests. It provides some helpful methods to test your rest
  * api more easily.
  */
-class RestTest extends FunctionalTest {
+abstract class RestTest extends SapphireTest {
 
 
     /**
