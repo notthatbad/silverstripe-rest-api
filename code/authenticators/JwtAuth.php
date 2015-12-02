@@ -31,7 +31,7 @@ class JwtAuth extends Object implements IAuth {
                 $token = explode(' ', $tokenStr)[1];
             } else {
                 // try variables
-                $token = $request->requestVar('token');
+                $token = $request->requestVar('access_token');
             }
             if($token) {
                 return self::get_member_from_token($token);

@@ -36,7 +36,7 @@ class TokenAuth extends Object implements IAuth {
         $token = $request->getHeader('Authorization');
         if (!$token)  {
             // try variables
-            $token = $request->requestVar('token');
+            $token = $request->requestVar('access_token');
         }
 
         if($token) {
