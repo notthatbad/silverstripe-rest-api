@@ -3,7 +3,7 @@
 /**
  * Base class for the rest resource controllers.
  */
-class BaseRestController extends Controller {
+abstract class BaseRestController extends Controller {
 
     /**
      * The default limit.
