@@ -25,19 +25,15 @@ class JwtAuth extends Object implements IAuth {
     /**
      * @param SS_HTTPRequest $request
      * @return Member
-     * @throws RestUserException
-     * @fixme: is 403 the correct response code?
      */
     public static function current($request) {
         try {
             $token = AuthFactory::get_token($request);
             return self::get_member_from_token($token);
-        } catch(RestUserException $e) {
-            throw $e;
         } catch(Exception $e) {
             SS_Log::log($e->getMessage(), SS_Log::INFO);
-            throw new RestUserException($e->getMessage(), 403);
         }
+        return false;
     }
 
     /**
