@@ -110,9 +110,14 @@ class JwtAuth extends Object implements IAuth {
      * @param string $token
      * @param string $key
      * @return array
+     * @throws Exception
      */
     public static function jwt_decode($token, $key) {
-        list($headerEncoded, $dataEncoded, $signature) = explode('.', $token);
+        $exploded = explode('.', $token);
+        if(count($exploded) < 3) {
+            throw new Exception("No valid JWT token");
+        }
+        list($headerEncoded, $dataEncoded, $signature) = $exploded;
         $selfRun = hash_hmac(Config::inst()->get('JwtAuth', 'HashAlgorithm'), "$headerEncoded.$dataEncoded", $key);
         if($selfRun === $signature) {
             return json_decode(self::base64_url_decode($dataEncoded), true);

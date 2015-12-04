@@ -47,7 +47,7 @@ class AuthFactory extends Object {
             return explode(' ', $tokenStrFromHeader)[1];
         } else if(!empty($tokenStrFromVar)) {
             // try variables
-            return $tokenStrFromHeader;
+            return $tokenStrFromVar;
         } else {
             // get all headers from apache server
             $headers = getallheaders();
