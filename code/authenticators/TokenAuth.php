@@ -22,27 +22,21 @@ class TokenAuth extends Object implements IAuth {
     }
 
     public static function delete($request) {
-        $token = $request->getHeader('Authorization');
-        if (!$token)  {
-            // try variables
-            $token = $request->requestVar('token');
+        try {
+            $token = AuthFactory::get_token($request);
+            $cache = SS_Cache::factory('rest_cache');
+            $cache->remove($token);
+        } catch(Exception $e) {
+            throw new RestUserException("", 403);
         }
-        $cache = SS_Cache::factory('rest_cache');
-        $cache->remove($token);
     }
 
     public static function current($request) {
-        // get the token from header
-        $token = $request->getHeader('Authorization');
-        if (!$token)  {
-            // try variables
-            $token = $request->requestVar('token');
-        }
-
-        if($token) {
+        try {
+            $token = AuthFactory::get_token($request);
             return self::get_member_from_token($token);
-        } else {
-            throw new RestUserException("", 404);
+        } catch(Exception $e) {
+            throw new RestUserException($e->getMessage(), 403);
         }
     }
 

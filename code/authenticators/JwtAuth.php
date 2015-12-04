@@ -22,24 +22,21 @@ class JwtAuth extends Object implements IAuth {
         // nothing to do here
     }
 
+    /**
+     * @param SS_HTTPRequest $request
+     * @return Member
+     * @throws RestUserException
+     * @fixme: is 403 the correct response code?
+     */
     public static function current($request) {
         try {
-            // get the token from header
-            $tokenStr = $request->getHeader('Authorization');
-            if ($tokenStr)  {
-                // string must have format: type token
-                $token = explode(' ', $tokenStr)[1];
-            } else {
-                // try variables
-                $token = $request->requestVar('token');
-            }
-            if($token) {
-                return self::get_member_from_token($token);
-            }
+            $token = AuthFactory::get_token($request);
+            return self::get_member_from_token($token);
         } catch(RestUserException $e) {
             throw $e;
         } catch(Exception $e) {
-            throw new RestUserException("Token can't be read or was not specified", 404);
+            SS_Log::log($e->getMessage(), SS_Log::INFO);
+            throw new RestUserException(print_r($request->getHeaders(), true), 403);
         }
     }
 
@@ -55,18 +52,18 @@ class JwtAuth extends Object implements IAuth {
         if($data) {
             // todo: check expire time
             if(time() > $data['expire']) {
-                throw new RestUserException("Session expired", 404);
+                throw new RestUserException("Session expired", 403);
             }
             $id = (int)$data['userId'];
             $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
             if(!$user) {
-                throw new RestUserException("Owner not found in database", 404);
+                throw new RestUserException("Owner not found in database", 403);
             }
             return $user;
-        } else if(Director::isDev() && $token == Config::inst()->get('TokenAuth', 'DevToken')) {
+        } else if(Director::isDev() && $token == Config::inst()->get('JwtAuth', 'DevToken')) {
             return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->first();
         }
-        throw new RestUserException("Token invalid", 404);
+        throw new RestUserException("Token invalid", 403);
     }
 
     /**
