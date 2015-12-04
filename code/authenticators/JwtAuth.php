@@ -36,7 +36,7 @@ class JwtAuth extends Object implements IAuth {
             throw $e;
         } catch(Exception $e) {
             SS_Log::log($e->getMessage(), SS_Log::INFO);
-            throw new RestUserException(print_r($request->getHeaders(), true), 403);
+            throw new RestUserException($e->getMessage(), 403);
         }
     }
 
@@ -48,20 +48,26 @@ class JwtAuth extends Object implements IAuth {
      * @return Member
      */
     private static function get_member_from_token($token) {
-        $data = self::jwt_decode($token, self::get_key());
-        if($data) {
-            // todo: check expire time
-            if(time() > $data['expire']) {
-                throw new RestUserException("Session expired", 403);
+        try {
+            $data = self::jwt_decode($token, self::get_key());
+            if($data) {
+                // todo: check expire time
+                if(time() > $data['expire']) {
+                    throw new RestUserException("Session expired", 403);
+                }
+                $id = (int)$data['userId'];
+                $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
+                if(!$user) {
+                    throw new RestUserException("Owner not found in database", 403);
+                }
+                return $user;
             }
-            $id = (int)$data['userId'];
-            $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
-            if(!$user) {
-                throw new RestUserException("Owner not found in database", 403);
+        } catch(RestUserException $e) {
+            throw $e;
+        } catch(Exception $e) {
+            if(Director::isDev() && $token == Config::inst()->get('JwtAuth', 'DevToken')) {
+                return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->first();
             }
-            return $user;
-        } else if(Director::isDev() && $token == Config::inst()->get('JwtAuth', 'DevToken')) {
-            return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->first();
         }
         throw new RestUserException("Token invalid", 403);
     }
