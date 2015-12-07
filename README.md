@@ -1,5 +1,7 @@
-REST module for Silverstripe
+REST module for Silverstripe 
 ============================
+
+[![Build Status](https://travis-ci.org/notthatbad/silverstripe-rest-api.svg)](https://travis-ci.org/notthatbad/silverstripe-rest-api)
 
 This module models the REST api in a simple fashion.
 
