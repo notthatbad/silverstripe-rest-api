@@ -4,8 +4,9 @@ After:
   - 'framework/*'
   - 'cms/*'
 ---
-AuthFactory:
-  AuthType: TokenAuth
+Injector:
+  Authenticator:
+    class: TokenAuth
 TokenAuth:
   DevToken: foobarbaz
 JwtAuth:
@@ -13,6 +14,7 @@ JwtAuth:
   HashAlgorithm: sha256
   Issuer: "rest.ntb.dev"
   ExpireTime: 1209600
+  DevToken: foobarbaz
 BaseRestController:
   CORSOrigin: '*'
   CORSMethods: 'GET, PUT, POST, DELETE, OPTIONS'

@@ -22,28 +22,23 @@ class TokenAuth extends Object implements IAuth {
     }
 
     public static function delete($request) {
-        $token = $request->getHeader('Authorization');
-        if (!$token)  {
-            // try variables
-            $token = $request->requestVar('token');
+        try {
+            $token = AuthFactory::get_token($request);
+            $cache = SS_Cache::factory('rest_cache');
+            $cache->remove($token);
+        } catch(Exception $e) {
+            SS_Log::log($e->getMessage(), SS_Log::INFO);
         }
-        $cache = SS_Cache::factory('rest_cache');
-        $cache->remove($token);
     }
 
     public static function current($request) {
-        // get the token from header
-        $token = $request->getHeader('Authorization');
-        if (!$token)  {
-            // try variables
-            $token = $request->requestVar('access_token');
-        }
-
-        if($token) {
+        try {
+            $token = AuthFactory::get_token($request);
             return self::get_member_from_token($token);
-        } else {
-            throw new RestUserException("", 404);
+        } catch(Exception $e) {
+            SS_Log::log($e->getMessage(), SS_Log::INFO);
         }
+        return false;
     }
 
     /**
@@ -55,7 +50,6 @@ class TokenAuth extends Object implements IAuth {
      */
     private static function get_member_from_token($token) {
         $cache = SS_Cache::factory('rest_cache');
-
         if($data = $cache->load($token)) {
             $data = json_decode($data, true);
             $id = (int)$data['user'];
