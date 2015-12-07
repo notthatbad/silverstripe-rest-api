@@ -7,6 +7,7 @@ env:
 matrix:
   include:
     - php: 5.4
+      env: DB=MYSQL CORE_RELEASE=3.2 PDO=1
 before_script:
   - phpenv rehash
   - composer self-update
@@ -14,5 +15,4 @@ before_script:
   - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss
   - cd ~/builds/ss
 script:
-  - cd ~/builds/ss/silverstripe-rest-api
-  - phpunit
+  - phpunit silverstripe-rest-api/tests/
