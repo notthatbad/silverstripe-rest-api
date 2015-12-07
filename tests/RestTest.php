@@ -6,7 +6,6 @@
  */
 abstract class RestTest extends SapphireTest {
 
-
     /**
      * @var bool Set whether to include this test in the TestRunner or to skip this.
      */
@@ -18,6 +17,12 @@ abstract class RestTest extends SapphireTest {
     protected $namespace = 'v/1';
 
     protected $defaultToken;
+
+    /**
+     * The route to the session without the namespace.
+     * @var string
+     */
+    protected $sessionRoute = 'sessions';
 
     public function setUp() {
         parent::setUp();
@@ -39,7 +44,7 @@ abstract class RestTest extends SapphireTest {
      * @return array
      * @throws SS_HTTPResponse_Exception
      */
-    public function makeApiRequest($path, $options=[]) {
+    protected function makeApiRequest($path, $options=[]) {
         $settings = array_merge([
             'session' => null,
             'token' => null,
@@ -59,5 +64,22 @@ abstract class RestTest extends SapphireTest {
             ]);
         $this->assertEquals($settings['code'], $response->getStatusCode(), "Wrong status code: {$response->getBody()}");
         return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Creates a session for the api.
+     *
+     * @param string $email the email of the user
+     * @param string $password the password for the user
+     * @return array the current session with `token`
+     */
+    protected function createSession($email='considine.colby@gmail.com', $password='password') {
+        $data = [
+            'email' => $email,
+            'password' => $password
+        ];
+        $dataString = json_encode($data);
+        $result = $this->makeApiRequest('sessions', ['body' => $dataString, 'method' => 'POST']);
+        return $result['session'];
     }
 }
