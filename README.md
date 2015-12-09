@@ -191,6 +191,7 @@ class UserFormatter implements IRestSerializeFormatter {
         return $user;
     }
 }
+```
 
 ### Routes
 
