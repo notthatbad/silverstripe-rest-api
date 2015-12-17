@@ -4,7 +4,8 @@
 /**
  *
  */
-class ApiSession extends Object {
+class ApiSession extends Object
+{
     /**
      * @var Member
      */

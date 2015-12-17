@@ -3,7 +3,8 @@
 /**
  * Serializer for json.
  */
-class JsonSerializer implements IRestSerializer {
+class JsonSerializer implements IRestSerializer
+{
 
     /**
      * The content type.
@@ -17,11 +18,13 @@ class JsonSerializer implements IRestSerializer {
      * @param array $data the data that should be serialized
      * @return string a json formatted string
      */
-    public function serialize($data) {
+    public function serialize($data)
+    {
         return json_encode($data);
     }
 
-    public function contentType() {
+    public function contentType()
+    {
         return $this->contentType;
     }
 }

@@ -4,7 +4,8 @@
  * The interface for serialize formatters for the rest module provides defines
  * a method for working with the given data.
  */
-interface IRestSerializeFormatter {
+interface IRestSerializeFormatter
+{
 
     /**
      * Formats a given model object into a serializable array, that can be used

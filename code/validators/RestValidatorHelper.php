@@ -3,7 +3,8 @@
 /**
  * Some generic validators for incoming data.
  */
-class RestValidatorHelper {
+class RestValidatorHelper
+{
     const DefaultMaxLength = 1600;
     const PHP_INT_MIN = -2147483648;
 
@@ -14,7 +15,8 @@ class RestValidatorHelper {
      * @return string
      * @throws ValidationException
      */
-    public static function validate_string($data, $field, $options=[]) {
+    public static function validate_string($data, $field, $options=[])
+    {
         $options = array_merge([
             'required' => true,
             'min' => 0,
@@ -23,18 +25,18 @@ class RestValidatorHelper {
         $required = $options['required'];
         $minLength = $options['min'];
         $maxLength = $options['max'];
-        if(isset($data[$field]) && is_string($data[$field])) {
+        if (isset($data[$field]) && is_string($data[$field])) {
             $string = $data[$field];
             // TODO: maybe the converting should not be made in validator
             $string = Convert::raw2sql(trim($string));
             $length = strlen($string);
-            if($length > $maxLength) {
+            if ($length > $maxLength) {
                 throw new ValidationException("Given $field is to long");
-            } else if($length < $minLength) {
+            } elseif ($length < $minLength) {
                 throw new ValidationException("Given $field is to short");
             }
             return $string;
-        } else if($required) {
+        } elseif ($required) {
             throw new ValidationException("No $field given, but $field is required");
         }
     }
@@ -46,7 +48,8 @@ class RestValidatorHelper {
      * @return int
      * @throws ValidationException
      */
-    public static function validate_int($data, $field, $options=[]) {
+    public static function validate_int($data, $field, $options=[])
+    {
         $options = array_merge([
             'required' => true,
             'min' => self::PHP_INT_MIN,
@@ -55,15 +58,15 @@ class RestValidatorHelper {
         $required = $options['required'];
         $min = $options['min'];
         $max = $options['max'];
-        if(isset($data[$field]) && is_numeric($data[$field])) {
+        if (isset($data[$field]) && is_numeric($data[$field])) {
             $int = (int) $data[$field];
 
-            if($int >= $min && $int <= $max) {
+            if ($int >= $min && $int <= $max) {
                 return $int;
             } else {
                 throw new ValidationException("Given integer '$int' are not in range");
             }
-        } else if($required) {
+        } elseif ($required) {
             throw new ValidationException("No $field given, but $field is required");
         }
     }
@@ -75,21 +78,22 @@ class RestValidatorHelper {
      * @return string
      * @throws ValidationException
      */
-    public static function validate_datetime($data, $field, $options=[]) {
+    public static function validate_datetime($data, $field, $options=[])
+    {
         $options = array_merge([
             'required' => true
         ], $options);
         $required = $options['required'];
-        if(isset($data[$field]) && is_string($data[$field])) {
+        if (isset($data[$field]) && is_string($data[$field])) {
             $date = $data[$field];
             $dateTime = new SS_Datetime();
             $dateTime->setValue($date);
-            if(!$dateTime->getValue()) {
+            if (!$dateTime->getValue()) {
                 throw new ValidationException("No valid datetime given.");
             }
 
             return $dateTime->Format('Y-m-d H:i:s');
-        } else if($required) {
+        } elseif ($required) {
             throw new ValidationException("No $field given, but $field is required");
         }
     }
@@ -101,18 +105,19 @@ class RestValidatorHelper {
      * @return string
      * @throws ValidationException
      */
-    public static function validate_url($data, $field, $options=[]) {
+    public static function validate_url($data, $field, $options=[])
+    {
         $options = array_merge([
             'required' => true
         ], $options);
         $required = $options['required'];
-        if(isset($data[$field]) && is_string($data[$field])) {
+        if (isset($data[$field]) && is_string($data[$field])) {
             $url = $data[$field];
-            if(!self::is_url($url)) {
+            if (!self::is_url($url)) {
                 throw new ValidationException("No valid url given");
             }
             return $url;
-        } else if($required) {
+        } elseif ($required) {
             throw new ValidationException("No $field given, but $field is required");
         }
     }
@@ -123,7 +128,8 @@ class RestValidatorHelper {
      * @param string $url the url, that should be validated
      * @return boolean
      */
-    public static function is_url($url) {
+    public static function is_url($url)
+    {
         /**
          * @author https://gist.github.com/dperini/729294
          */
@@ -139,19 +145,20 @@ class RestValidatorHelper {
      * @return string
      * @throws ValidationException
      */
-    public static function validate_country_code($data, $field, $options=[]) {
+    public static function validate_country_code($data, $field, $options=[])
+    {
         $options = array_merge([
             'required' => true
         ], $options);
         $required = $options['required'];
-        if(isset($data[$field]) && is_string($data[$field])) {
+        if (isset($data[$field]) && is_string($data[$field])) {
             $code = $data[$field];
             $countries = Zend_Locale::getTranslationList('territory', i18n::get_locale(), 2);
-            if(!array_key_exists(strtoupper($code), $countries)) {
+            if (!array_key_exists(strtoupper($code), $countries)) {
                 throw new ValidationException("No valid country code given");
             }
             return $code;
-        } else if($required) {
+        } elseif ($required) {
             throw new ValidationException("No $field given, but $field is required");
         }
     }
@@ -163,18 +170,19 @@ class RestValidatorHelper {
      * @return string
      * @throws ValidationException
      */
-    public static function validate_email($data, $field, $options=[]) {
+    public static function validate_email($data, $field, $options=[])
+    {
         $options = array_merge([
             'required' => true
         ], $options);
         $required = $options['required'];
-        if(isset($data[$field]) && is_string($data[$field])) {
+        if (isset($data[$field]) && is_string($data[$field])) {
             $email = $data[$field];
-            if(Email::is_valid_address($email) === 0) {
+            if (Email::is_valid_address($email) === 0) {
                 throw new ValidationException("No valid email given");
             }
             return $email;
-        } else if($required) {
+        } elseif ($required) {
             throw new ValidationException("No $field given, but $field is required");
         }
     }

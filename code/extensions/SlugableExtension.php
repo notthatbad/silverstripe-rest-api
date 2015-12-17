@@ -6,7 +6,8 @@
  * The data objects need a Title attribute or getTitle method, which will be used to generate the slug. If no title is
  * provided, the extension uses a generic combination with class name and object id.
  */
-class SlugableExtension extends DataExtension {
+class SlugableExtension extends DataExtension
+{
     private static $db = [
         'URLSegment' => 'Varchar(200)'
     ];
@@ -27,21 +28,22 @@ class SlugableExtension extends DataExtension {
     /**
      * Set URLSegment to be unique on write
      */
-    public function onBeforeWrite() {
+    public function onBeforeWrite()
+    {
         parent::onBeforeWrite();
 
         $defaults = $this->owner->config()->defaults;
         $URLSegment = $this->owner->URLSegment;
 
         // If there is no URLSegment set, generate one from Title
-        if((!$URLSegment || $URLSegment == $defaults['URLSegment']) && $this->owner->Title != $defaults['Title']) {
+        if ((!$URLSegment || $URLSegment == $defaults['URLSegment']) && $this->owner->Title != $defaults['Title']) {
             $URLSegment = $this->generateURLSegment($this->owner->Title);
-        } else if($this->owner->isChanged('URLSegment')) {
+        } elseif ($this->owner->isChanged('URLSegment')) {
             // Make sure the URLSegment is valid for use in a URL
-            $segment = preg_replace('/[^A-Za-z0-9]+/','-',$this->owner->URLSegment);
-            $segment = preg_replace('/-+/','-',$segment);
+            $segment = preg_replace('/[^A-Za-z0-9]+/', '-', $this->owner->URLSegment);
+            $segment = preg_replace('/-+/', '-', $segment);
             // If after sanitising there is no URLSegment, give it a reasonable default
-            if(!$segment) {
+            if (!$segment) {
                 $segment = $this->fallbackUrl();
             }
             $URLSegment = $segment;
@@ -50,7 +52,7 @@ class SlugableExtension extends DataExtension {
         $count = 2;
         $ID = $this->owner->ID;
 
-        while($this->lookForExistingURLSegment($URLSegment, $ID)) {
+        while ($this->lookForExistingURLSegment($URLSegment, $ID)) {
             $URLSegment = preg_replace('/-[0-9]+$/', null, $URLSegment) . '-' . $count;
             $count++;
         }
@@ -65,7 +67,8 @@ class SlugableExtension extends DataExtension {
      * @param int $id
      * @return bool
      */
-    protected function lookForExistingURLSegment($urlSegment, $id) {
+    protected function lookForExistingURLSegment($urlSegment, $id)
+    {
         return $this->owner->get()->filter(
             'URLSegment', $urlSegment
         )->exclude('ID', $id)->exists();
@@ -82,12 +85,13 @@ class SlugableExtension extends DataExtension {
      * @param string $title the given title
      * @return string generated url segment
      */
-    public function generateURLSegment($title) {
+    public function generateURLSegment($title)
+    {
         $filter = URLSegmentFilter::create();
         $t = $filter->filter($title);
 
         // Fallback to generic page name if path is empty (= no valid, convertable characters)
-        if(!$t || $t == '-' || $t == '-1') {
+        if (!$t || $t == '-' || $t == '-1') {
             $t = $this->fallbackUrl();
         }
 
@@ -97,9 +101,9 @@ class SlugableExtension extends DataExtension {
         return $t;
     }
 
-    private function fallbackUrl() {
+    private function fallbackUrl()
+    {
         $className = strtolower(get_class($this->owner));
         return "$className-{$this->owner->ID}";
     }
-
 }

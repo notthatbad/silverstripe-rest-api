@@ -3,7 +3,8 @@
 /**
  * Test Helper class provides some helpful functions for tests.
  */
-class TestHelper {
+class TestHelper
+{
 
     /**
      * @param callable $callback
@@ -12,7 +13,8 @@ class TestHelper {
      * @param string $expectedMessage
      * @author VladaHejda
      */
-    public static function assertException(callable $callback, $expectedException = 'Exception', $expectedCode = null, $expectedMessage = null) {
+    public static function assertException(callable $callback, $expectedException = 'Exception', $expectedCode = null, $expectedMessage = null)
+    {
         $self = new SapphireTest;
         if (!ClassInfo::exists($expectedException)) {
             $self->fail(sprintf('An exception of type "%s" does not exist.', $expectedException));
@@ -26,7 +28,7 @@ class TestHelper {
             $errorMessage = 'Failed asserting the class of exception';
             if ($message && $code) {
                 $errorMessage .= sprintf(' (message was %s, code was %d)', $message, $code);
-            } else if ($code) {
+            } elseif ($code) {
                 $errorMessage .= sprintf(' (code was %d)', $code);
             }
             $errorMessage .= '.';
