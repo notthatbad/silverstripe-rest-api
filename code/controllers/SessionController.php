@@ -10,27 +10,31 @@ class SessionController extends BaseRestController {
         'delete' => '->isAuthenticated'
     );
 
-    /**
-     * @param SS_HTTPRequest $request
-     * @return array
-     * @throws RestUserException
-     */
+	/**
+	 * @param SS_HTTPRequest $request
+	 * @return array
+	 * @throws RestSystemException
+	 * @throws RestUserException
+	 */
     public function post($request) {
         $data = json_decode($request->getBody(), true);
-        if(!$data) {
-            throw new RestUserException("No data for session provided.", 404);
+        if (!$data) {
+            throw new RestUserException("No data for session provided.", 401, 401);
         }
         try{
-            $validated = SessionValidator::validate($data);
-            $session = AuthFactory::createAuth()->authenticate($validated['Email'], $validated['Password']);
-            if(!$session) {
-                throw new RestUserException("Login incorrect",404);
+            $validated = Injector::inst()->get('SessionValidator')->validate($data);
+	        $user = Injector::inst()->get('ApiMemberAuthenticator')->authenticate($validated);
+            $session = $user ? AuthFactory::createAuth()->createSession($user) : null;
+            if (!$session) {
+                throw new RestUserException("Login incorrect", 401, 401);
             }
         } catch(ValidationException $e) {
-            throw new RestUserException($e->getMessage(), 404);
+	        throw new RestUserException($e->getMessage(), 422, 422);
+        } catch(RestUserException $e) {
+	        throw $e;
         } catch(Exception $e) {
             error_log($e->getMessage());
-            throw new RestUserException($e->getMessage(), 404);
+            throw new RestSystemException($e->getMessage(), $e->getCode() ?: 500);
         }
 
         $meta = ['timestamp' => time()];

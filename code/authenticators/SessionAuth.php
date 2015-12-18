@@ -7,23 +7,33 @@ class SessionAuth extends Object implements IAuth {
 
     public static function authenticate($email, $password) {
         // auth
-        $authenticator = new \MemberAuthenticator();
+        $authenticator = Injector::inst()->get('ApiMemberAuthenticator');
         if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
-            $user->logIn();
-            $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($user->ID);
-            // create session
-            $session = ApiSession::create();
-            $session->User = $user;
-            $session->Token = AuthFactory::generate_token($user);
-
-            return $session;
+	        return self::createSession($user);
         }
     }
 
-    public static function delete($request) {
+	/**
+	 * @param Member $user
+	 * @return ApiSession
+	 */
+	public static function createSession($user) {
+		$user->logIn();
+		/** @var Member $user */
+		$user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($user->ID);
+
+		// create session
+		$session = ApiSession::create();
+		$session->User = $user;
+		$session->Token = AuthFactory::generate_token($user);
+
+		return $session;
+	}
+
+	public static function delete($request) {
         $owner = self::current($request);
         if(!$owner) {
-            throw new RestUserException("No session found", 404);
+            throw new RestUserException("No session found", 404, 404);
         }
         $owner->logOut();
         return true;
@@ -36,6 +46,6 @@ class SessionAuth extends Object implements IAuth {
      */
     public static function current($request) {
         $id = Member::currentUserID();
-        return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
+        return $id ? DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id) : null;
     }
 }
