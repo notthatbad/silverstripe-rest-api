@@ -8,17 +8,25 @@
 class JwtAuth extends Object implements IAuth {
 
     public static function authenticate($email, $password) {
-        $authenticator = new MemberAuthenticator();
+        $authenticator = Injector::inst()->get('ApiMemberAuthenticator');
         if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
-            // create session
-            $session = ApiSession::create();
-            $session->User = $user;
-            $session->Token = JwtAuth::generate_token($user);
-            return $session;
+	        return self::createSession($user);
         }
     }
 
-    public static function delete($request) {
+	/**
+	 * @param Member $user
+	 * @return ApiSession
+	 */
+	public static function createSession($user) {
+		// create session
+		$session = ApiSession::create();
+		$session->User = $user;
+		$session->Token = JwtAuth::generate_token($user);
+		return $session;
+	}
+
+	public static function delete($request) {
         // nothing to do here
     }
 
@@ -37,7 +45,7 @@ class JwtAuth extends Object implements IAuth {
     }
 
     /**
-     * 
+     *
      *
      * @param string $token
      * @throws RestUserException
@@ -128,4 +136,5 @@ class JwtAuth extends Object implements IAuth {
     static function base64_url_decode($base64) {
         return base64_decode(strtr($base64, '-_', '+/'));
     }
+
 }

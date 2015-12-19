@@ -8,9 +8,16 @@ interface IAuth {
     /**
      * @param string $email the email of the
      * @param string $password
-     * @return \Ntb\ApiSession
+     * @deprecated - use createSession instead
+     * @return ApiSession
      */
     public static function authenticate($email, $password);
+
+	/**
+	 * @param Member $member
+	 * @return ApiSession
+	 */
+	public static function createSession($member);
 
     /**
      * @param SS_HTTPRequest $request
