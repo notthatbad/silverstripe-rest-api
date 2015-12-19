@@ -8,7 +8,7 @@ class SessionFormatter implements IRestSerializeFormatter {
     /**
      * Returns an array with entries for `user`.
      *
-     * @param Ntb\ApiSession $data
+     * @param ApiSession $data
      * @param array $access
      * @param array $fields
      * @return array the user data in a serializable structure
