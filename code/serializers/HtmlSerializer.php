@@ -3,7 +3,8 @@
 /**
  * Serializer for html.
  */
-class HtmlSerializer extends ViewableData implements IRestSerializer {
+class HtmlSerializer extends ViewableData implements IRestSerializer
+{
 
     /**
      * The content type
@@ -17,20 +18,23 @@ class HtmlSerializer extends ViewableData implements IRestSerializer {
      * @param array $data
      * @return string an html string
      */
-    public function serialize($data) {
+    public function serialize($data)
+    {
         $list = $this->recursive($data, 1);
         return $this->renderWith(['Result', 'Controller'], ['Data' => ArrayList::create($list)]);
     }
 
-    public function contentType() {
+    public function contentType()
+    {
         return $this->contentType;
     }
 
-    private function recursive($data, $level) {
+    private function recursive($data, $level)
+    {
         $list = [];
-        if(is_array($data)) {
+        if (is_array($data)) {
             foreach ($data as $key => $value) {
-                if(is_array($value)) {
+                if (is_array($value)) {
                     $list[] = ArrayData::create(['Key' => $key, 'Value' => '', 'Heading' => true, 'Level' => $level]);
                     $list = array_merge($list, $this->recursive($value, $level+1));
                 } else {

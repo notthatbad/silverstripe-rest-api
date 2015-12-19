@@ -3,7 +3,8 @@
 /**
  * Interface for data validators in the rest api.
  */
-interface IRestValidator {
+interface IRestValidator
+{
     /**
      * Validates the given data and returns a mapped version back to the caller.
      *
@@ -12,4 +13,4 @@ interface IRestValidator {
      * @throws ValidationException
      */
     public static function validate($data);
-} 
+}

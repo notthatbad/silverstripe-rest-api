@@ -3,14 +3,16 @@
 /**
  * Factory for different kind of rest authenticators.
  */
-class AuthFactory extends Object {
+class AuthFactory extends Object
+{
 
     /**
      * Returns a new instance of an authentication mechanism depending on the configured type.
      * @return IAuth an instance of an authentication mechanism
      * @throws RestSystemException
      */
-    public static function createAuth() {
+    public static function createAuth()
+    {
         return Injector::inst()->get('Authenticator');
     }
 
@@ -20,7 +22,8 @@ class AuthFactory extends Object {
      * @throws PasswordEncryptor_NotFoundException
      * @return string
      */
-    public static function generate_token($user) {
+    public static function generate_token($user)
+    {
         $generator = new RandomGenerator();
         $tokenString = $generator->randomToken();
         $e = PasswordEncryptor::create_for_algorithm('blowfish');
@@ -38,20 +41,21 @@ class AuthFactory extends Object {
      * @return String the token
      * @throws Exception
      */
-    public static function get_token($request) {
+    public static function get_token($request)
+    {
         // try to get the token from request object
         $tokenStrFromHeader = $request->getHeader('Authorization');
         $tokenStrFromVar = $request->requestVar('access_token');
-        if (!empty($tokenStrFromHeader))  {
+        if (!empty($tokenStrFromHeader)) {
             // string must have format: type token
             return explode(' ', $tokenStrFromHeader)[1];
-        } else if(!empty($tokenStrFromVar)) {
+        } elseif (!empty($tokenStrFromVar)) {
             // try variables
             return $tokenStrFromVar;
         } else {
             // get all headers from apache server
             $headers = getallheaders();
-            if(isset($headers['Authorization'])) {
+            if (isset($headers['Authorization'])) {
                 return explode(' ', $headers['Authorization'])[1];
             }
         }

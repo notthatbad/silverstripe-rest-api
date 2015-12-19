@@ -3,12 +3,14 @@
 /**
  * Authentication mechanism which uses the internal Silverstripe authentication (session based).
  */
-class SessionAuth extends Object implements IAuth {
+class SessionAuth extends Object implements IAuth
+{
 
-    public static function authenticate($email, $password) {
+    public static function authenticate($email, $password)
+    {
         // auth
         $authenticator = new \MemberAuthenticator();
-        if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
+        if ($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
             $user->logIn();
             $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($user->ID);
             // create session
@@ -20,9 +22,10 @@ class SessionAuth extends Object implements IAuth {
         }
     }
 
-    public static function delete($request) {
+    public static function delete($request)
+    {
         $owner = self::current($request);
-        if(!$owner) {
+        if (!$owner) {
             throw new RestUserException("No session found", 404);
         }
         $owner->logOut();
@@ -34,7 +37,8 @@ class SessionAuth extends Object implements IAuth {
      * @param SS_HTTPRequest $request
      * @return Member
      */
-    public static function current($request) {
+    public static function current($request)
+    {
         $id = Member::currentUserID();
         return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
     }

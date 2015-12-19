@@ -3,7 +3,8 @@
 /**
  * Interface for authentication mechanisms.
  */
-interface IAuth {
+interface IAuth
+{
 
     /**
      * @param string $email the email of the

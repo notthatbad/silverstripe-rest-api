@@ -3,7 +3,8 @@
 /**
  * Provides methods for serializing data.
  */
-interface IRestSerializer {
+interface IRestSerializer
+{
     /**
      * Serialize the data in a specific format like html, json, xml etc.
      *

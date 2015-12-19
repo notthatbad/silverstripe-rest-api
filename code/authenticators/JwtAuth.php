@@ -5,11 +5,13 @@
  *
  * The mechanism works stateless. JWT is described in RFC 7519.
  */
-class JwtAuth extends Object implements IAuth {
+class JwtAuth extends Object implements IAuth
+{
 
-    public static function authenticate($email, $password) {
+    public static function authenticate($email, $password)
+    {
         $authenticator = new MemberAuthenticator();
-        if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
+        if ($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
             // create session
             $session = ApiSession::create();
             $session->User = $user;
@@ -18,7 +20,8 @@ class JwtAuth extends Object implements IAuth {
         }
     }
 
-    public static function delete($request) {
+    public static function delete($request)
+    {
         // nothing to do here
     }
 
@@ -26,11 +29,12 @@ class JwtAuth extends Object implements IAuth {
      * @param SS_HTTPRequest $request
      * @return Member
      */
-    public static function current($request) {
+    public static function current($request)
+    {
         try {
             $token = AuthFactory::get_token($request);
             return self::get_member_from_token($token);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             SS_Log::log($e->getMessage(), SS_Log::INFO);
         }
         return false;
@@ -43,25 +47,26 @@ class JwtAuth extends Object implements IAuth {
      * @throws RestUserException
      * @return Member
      */
-    private static function get_member_from_token($token) {
+    private static function get_member_from_token($token)
+    {
         try {
             $data = self::jwt_decode($token, self::get_key());
-            if($data) {
+            if ($data) {
                 // todo: check expire time
-                if(time() > $data['expire']) {
+                if (time() > $data['expire']) {
                     throw new RestUserException("Session expired", 403);
                 }
                 $id = (int)$data['userId'];
                 $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
-                if(!$user) {
+                if (!$user) {
                     throw new RestUserException("Owner not found in database", 403);
                 }
                 return $user;
             }
-        } catch(RestUserException $e) {
+        } catch (RestUserException $e) {
             throw $e;
-        } catch(Exception $e) {
-            if(Director::isDev() && $token == Config::inst()->get('JwtAuth', 'DevToken')) {
+        } catch (Exception $e) {
+            if (Director::isDev() && $token == Config::inst()->get('JwtAuth', 'DevToken')) {
                 return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->first();
             }
         }
@@ -72,7 +77,8 @@ class JwtAuth extends Object implements IAuth {
      * @param Member $user
      * @return string
      */
-    private static function generate_token($user) {
+    private static function generate_token($user)
+    {
         $iat = time();
         $data = [
             'iat' => $iat,
@@ -90,7 +96,8 @@ class JwtAuth extends Object implements IAuth {
      * @param string $key
      * @return string
      */
-    public static function jwt_encode($data, $key) {
+    public static function jwt_encode($data, $key)
+    {
         $header = ['typ' => 'JWT'];
         $headerEncoded = self::base64_url_encode(json_encode($header));
         $dataEncoded = self::base64_url_encode(json_encode($data));
@@ -98,7 +105,8 @@ class JwtAuth extends Object implements IAuth {
         return "$headerEncoded.$dataEncoded.$signature";
     }
 
-    private static function get_key() {
+    private static function get_key()
+    {
         return Config::inst()->get('JwtAuth', 'Key');
     }
 
@@ -108,24 +116,27 @@ class JwtAuth extends Object implements IAuth {
      * @return array
      * @throws Exception
      */
-    public static function jwt_decode($token, $key) {
+    public static function jwt_decode($token, $key)
+    {
         $exploded = explode('.', $token);
-        if(count($exploded) < 3) {
+        if (count($exploded) < 3) {
             throw new Exception("No valid JWT token");
         }
         list($headerEncoded, $dataEncoded, $signature) = $exploded;
         $selfRun = hash_hmac(Config::inst()->get('JwtAuth', 'HashAlgorithm'), "$headerEncoded.$dataEncoded", $key);
-        if($selfRun === $signature) {
+        if ($selfRun === $signature) {
             return json_decode(self::base64_url_decode($dataEncoded), true);
         }
         return false;
     }
 
-    static function base64_url_encode($data) {
+    public static function base64_url_encode($data)
+    {
         return rtrim(base64_encode($data), '=');
     }
 
-    static function base64_url_decode($base64) {
+    public static function base64_url_decode($base64)
+    {
         return base64_decode(strtr($base64, '-_', '+/'));
     }
 }

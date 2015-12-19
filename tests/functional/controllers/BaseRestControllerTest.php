@@ -5,38 +5,44 @@
  *
  * @todo: test different serializers, pagination and error handling
  */
-class BaseRestControllerTest extends RestTest {
+class BaseRestControllerTest extends RestTest
+{
     protected $skipTest = false;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         Config::inst()->update('Director', 'rules', [
             'v/1/RestTestRoute/$ID/$OtherID' => 'TestController',
         ]);
     }
 
-    public function testControllerGET() {
+    public function testControllerGET()
+    {
         $result = $this->makeApiRequest('RestTestRoute');
 
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test GET', $result['message']);
     }
 
-    public function testControllerDELETE() {
+    public function testControllerDELETE()
+    {
         $result = $this->makeApiRequest('RestTestRoute', ['method' => 'DELETE']);
 
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test DELETE', $result['message']);
     }
 
-    public function testControllerPOST() {
+    public function testControllerPOST()
+    {
         $result = $this->makeApiRequest('RestTestRoute', ['method' => 'POST']);
 
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test POST', $result['message']);
     }
 
-    public function testControllerPUT() {
+    public function testControllerPUT()
+    {
         $result = $this->makeApiRequest('RestTestRoute', ['method' => 'PUT']);
 
         $this->assertTrue(array_key_exists('message', $result));
@@ -44,28 +50,33 @@ class BaseRestControllerTest extends RestTest {
     }
 }
 
-class TestController extends BaseRestController implements TestOnly {
+class TestController extends BaseRestController implements TestOnly
+{
 
-    private static $allowed_actions = array (
+    private static $allowed_actions = array(
         'post' => true,
         'delete' => true,
         'get' => true,
         'put' => true
     );
 
-    public function get() {
+    public function get()
+    {
         return ['message' => 'Test GET'];
     }
 
-    public function post() {
+    public function post()
+    {
         return ['message' => 'Test POST'];
     }
 
-    public function put() {
+    public function put()
+    {
         return ['message' => 'Test PUT'];
     }
 
-    public function delete() {
+    public function delete()
+    {
         return ['message' => 'Test DELETE'];
     }
 }

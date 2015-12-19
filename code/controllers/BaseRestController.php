@@ -3,7 +3,8 @@
 /**
  * Base class for the rest resource controllers.
  */
-abstract class BaseRestController extends Controller {
+abstract class BaseRestController extends Controller
+{
 
     /**
      * The default limit.
@@ -25,9 +26,10 @@ abstract class BaseRestController extends Controller {
      * @param SS_HTTPRequest $request
      * @return int the offset value
      */
-    protected static function offset($request) {
+    protected static function offset($request)
+    {
         $offset = (int)$request->getVar('offset');
-        if($offset && is_int($offset) && $offset >= 0) {
+        if ($offset && is_int($offset) && $offset >= 0) {
             return $offset;
         } else {
             return static::$default_offset;
@@ -40,9 +42,10 @@ abstract class BaseRestController extends Controller {
      * @param SS_HTTPRequest $request
      * @return int the limit value
      */
-    protected static function limit($request) {
+    protected static function limit($request)
+    {
         $limit = (int)$request->getVar('limit');
-        if($limit && is_int($limit) && $limit > 0) {
+        if ($limit && is_int($limit) && $limit > 0) {
             return $limit;
         } else {
             return static::$default_limit;
@@ -51,10 +54,11 @@ abstract class BaseRestController extends Controller {
 
     /**
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
         // check for CORS options request
-        if ($this->request->httpMethod() === 'OPTIONS' ) {
+        if ($this->request->httpMethod() === 'OPTIONS') {
             // create direct response without requesting any controller
             $response = $this->getResponse();
             // set CORS header from config
@@ -72,9 +76,12 @@ abstract class BaseRestController extends Controller {
      * @param string $action
      * @return HTMLText|SS_HTTPResponse
      */
-    protected function handleAction($request, $action) {
-        foreach($request->latestParams() as $k => $v) {
-            if($v || !isset($this->urlParams[$k])) $this->urlParams[$k] = $v;
+    protected function handleAction($request, $action)
+    {
+        foreach ($request->latestParams() as $k => $v) {
+            if ($v || !isset($this->urlParams[$k])) {
+                $this->urlParams[$k] = $v;
+            }
         }
         // set the action to the request method / for developing we could use an additional parameter to choose another method
         $action = $this->getMethodName($request);
@@ -86,12 +93,12 @@ abstract class BaseRestController extends Controller {
         $response = $this->getResponse();
         // perform action
         try {
-            if(!$this->hasAction($action)) {
+            if (!$this->hasAction($action)) {
                 // method couldn't found on controller
                 throw new RestUserException("Action '$action' isn't available on class $className.", 404);
             }
 
-            if(!$this->checkAccessAction($action)) {
+            if (!$this->checkAccessAction($action)) {
                 throw new RestUserException("Action '$action' isn't allowed on class $className.", 404);
             }
 
@@ -107,7 +114,7 @@ abstract class BaseRestController extends Controller {
             }
             // set content type
             $body = $actionRes;
-        } catch(RestUserException $ex) {
+        } catch (RestUserException $ex) {
             // a user exception was caught
             $response->setStatusCode($ex->getHttpStatusCode());
             $body = [
@@ -117,7 +124,7 @@ abstract class BaseRestController extends Controller {
             SS_Log::log(
                 json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
                 SS_Log::INFO);
-        } catch(RestSystemException $ex) {
+        } catch (RestSystemException $ex) {
             // a system exception was caught
             $response->addHeader('Content-Type', $serializer->contentType());
             $response->setStatusCode("500");
@@ -125,7 +132,7 @@ abstract class BaseRestController extends Controller {
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
             ];
-            if(Director::isDev()) {
+            if (Director::isDev()) {
                 $body = array_merge($body, [
                     'file' => $ex->getFile(),
                     'line' => $ex->getLine(),
@@ -135,7 +142,7 @@ abstract class BaseRestController extends Controller {
             SS_Log::log(
                 json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
                 SS_Log::WARN);
-        } catch(Exception $ex) {
+        } catch (Exception $ex) {
             // an unexpected exception was caught
             $response->addHeader('Content-Type', $serializer->contentType());
             $response->setStatusCode("500");
@@ -143,7 +150,7 @@ abstract class BaseRestController extends Controller {
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
             ];
-            if(Director::isDev()) {
+            if (Director::isDev()) {
                 $body = array_merge($body, [
                     'file' => $ex->getFile(),
                     'line' => $ex->getLine(),
@@ -152,7 +159,7 @@ abstract class BaseRestController extends Controller {
             }
             SS_Log::log(
                 json_encode(array_merge(
-                    $body, ['file' => $ex->getFile(), 'line' => $ex->getLine(),'trace' => $ex->getTrace()])),
+                    $body, ['file' => $ex->getFile(), 'line' => $ex->getLine(), 'trace' => $ex->getTrace()])),
                 SS_Log::ERR);
         }
         // serialize content and set body of response
@@ -169,10 +176,11 @@ abstract class BaseRestController extends Controller {
      * @param SS_HTTPRequest $request the current request
      * @return string the used http method as string
      */
-    private function getMethodName($request) {
+    private function getMethodName($request)
+    {
         $method = '';
-        if(Director::isDev() && ($varMethod = $request->getVar('method'))) {
-            if(in_array(strtoupper($varMethod), array('GET','POST','PUT','DELETE','HEAD'))) {
+        if (Director::isDev() && ($varMethod = $request->getVar('method'))) {
+            if (in_array(strtoupper($varMethod), array('GET', 'POST', 'PUT', 'DELETE', 'HEAD'))) {
                 $method = $varMethod;
             }
         } else {
@@ -185,7 +193,8 @@ abstract class BaseRestController extends Controller {
      * @return bool
      * @throws RestSystemException
      */
-    protected function isAuthenticated() {
+    protected function isAuthenticated()
+    {
         return $this->currentUser() ? true : false;
     }
 
@@ -193,12 +202,14 @@ abstract class BaseRestController extends Controller {
      * @return bool
      * @throws RestSystemException
      */
-    protected function isAdmin() {
+    protected function isAdmin()
+    {
         $member = $this->currentUser();
         return $member && Permission::checkMember($member, 'ADMIN');
     }
 
-    protected function addCORSHeaders($response) {
+    protected function addCORSHeaders($response)
+    {
         $response->addHeader('Access-Control-Allow-Origin', Config::inst()->get('BaseRestController', 'CORSOrigin'));
         $response->addHeader('Access-Control-Allow-Methods', Config::inst()->get('BaseRestController', 'CORSMethods'));
         $response->addHeader('Access-Control-Max-Age', Config::inst()->get('BaseRestController', 'CORSMaxAge'));
@@ -207,7 +218,8 @@ abstract class BaseRestController extends Controller {
         return $response;
     }
 
-    protected function currentUser() {
+    protected function currentUser()
+    {
         return AuthFactory::createAuth()->current($this->request);
     }
 }

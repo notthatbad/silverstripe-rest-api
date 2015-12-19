@@ -3,7 +3,8 @@
 /**
  * Factory for different kind of rest serializers.
  */
-class SerializerFactory {
+class SerializerFactory
+{
     private static $lookup = [
         'json' => 'application/json',
         'html' => 'text/html'
@@ -16,11 +17,12 @@ class SerializerFactory {
      * @return IRestSerializer an instance of a serializer
      * @throws RestUserException
      */
-    public static function create($mimeType='application/json') {
+    public static function create($mimeType='application/json')
+    {
         $availableSerializers = ClassInfo::implementorsOf('IRestSerializer');
-        foreach($availableSerializers as $serializer) {
+        foreach ($availableSerializers as $serializer) {
             $instance = new $serializer();
-            if($instance->contentType() == $mimeType) {
+            if ($instance->contentType() == $mimeType) {
                 return $instance;
             }
         }
@@ -34,19 +36,22 @@ class SerializerFactory {
      * @return IRestSerializer a new instance of a serializer which fits the request best
      * @throws RestUserException
      */
-    public static function create_from_request($request) {
-        if($type = $request->getVar('accept')) {
+    public static function create_from_request($request)
+    {
+        if ($type = $request->getVar('accept')) {
             try {
-                if(array_key_exists($type, self::$lookup)) {
+                if (array_key_exists($type, self::$lookup)) {
                     return self::create(self::$lookup[$type]);
                 }
-            } catch(Exception $e) {}
+            } catch (Exception $e) {
+            }
         }
         $types = $request->getAcceptMimetypes();
-        foreach($types as $type) {
+        foreach ($types as $type) {
             try {
                 return self::create($type);
-            } catch(RestUserException $e) {}
+            } catch (RestUserException $e) {
+            }
         }
         return self::create();
     }
