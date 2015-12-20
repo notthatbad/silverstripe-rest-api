@@ -2,6 +2,8 @@ REST module for Silverstripe
 ============================
 
 [![Build Status](https://travis-ci.org/notthatbad/silverstripe-rest-api.svg)](https://travis-ci.org/notthatbad/silverstripe-rest-api)
+[![Latest Stable Version](https://poser.pugx.org/ntb/silverstripe-rest-api/v/stable)](https://packagist.org/packages/ntb/silverstripe-rest-api)
+[![License](https://poser.pugx.org/ntb/silverstripe-rest-api/license)](https://packagist.org/packages/ntb/silverstripe-rest-api)
 
 This module models the REST api in a simple fashion.
 
