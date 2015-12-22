@@ -7,6 +7,10 @@ After:
 Injector:
   Authenticator:
     class: TokenAuth
+  ApiMemberAuthenticator:
+    class: MemberAuthenticor
+  SessionValidator:
+    class: SessionValidator
 TokenAuth:
   DevToken: foobarbaz
 JwtAuth:
