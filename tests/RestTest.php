@@ -7,10 +7,6 @@
 abstract class RestTest extends SapphireTest {
 
     /**
-     * @var bool Set whether to include this test in the TestRunner or to skip this.
-     */
-    protected $skipTest = true;
-    /**
      * The namespace of your api.
      * @var string
      */
