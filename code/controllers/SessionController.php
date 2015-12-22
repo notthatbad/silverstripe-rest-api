@@ -21,7 +21,7 @@ class SessionController extends BaseRestController {
             throw new RestUserException("No data for session provided.", 404);
         }
         try{
-            $validated = SessionValidator::validate($data);
+            $validated = Injector::inst()->get('SessionValidator')->validate($data);
             $session = AuthFactory::createAuth()->authenticate($validated['Email'], $validated['Password']);
             if(!$session) {
                 throw new RestUserException("Login incorrect",404);
@@ -32,7 +32,6 @@ class SessionController extends BaseRestController {
             error_log($e->getMessage());
             throw new RestUserException($e->getMessage(), 404);
         }
-
         $meta = ['timestamp' => time()];
         $result = [
             'session' => SessionFormatter::format($session)
