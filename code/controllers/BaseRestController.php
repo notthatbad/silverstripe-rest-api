@@ -109,7 +109,7 @@ abstract class BaseRestController extends Controller {
             $body = $actionRes;
         } catch(RestUserException $ex) {
             // a user exception was caught
-            $response->setStatusCode("404");
+            $response->setStatusCode($ex->getHttpStatusCode());
             $body = [
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()

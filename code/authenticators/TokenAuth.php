@@ -6,22 +6,30 @@
 class TokenAuth extends Object implements IAuth {
 
     public static function authenticate($email, $password) {
-        $authenticator = new MemberAuthenticator();
+        $authenticator = Injector::inst()->get('ApiMemberAuthenticator');
         if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
-            // create session
-            $session = ApiSession::create();
-            $session->User = $user;
-            $session->Token = AuthFactory::generate_token($user);
-
-            // save session
-            $cache = SS_Cache::factory('rest_cache');
-            $cache->save(json_encode(['token' => $session->Token, 'user' => $session->User->ID]), $session->Token);
-
-            return $session;
+	        return self::createSession($user);
         }
     }
 
-    public static function delete($request) {
+	/**
+	 * @param Member $user
+	 * @return ApiSession
+	 */
+	public static function createSession($user) {
+		// create session
+		$session = ApiSession::create();
+		$session->User = $user;
+		$session->Token = AuthFactory::generate_token($user);
+
+		// save session
+		$cache = SS_Cache::factory('rest_cache');
+		$cache->save(json_encode(['token' => $session->Token, 'user' => $session->User->ID]), $session->Token);
+
+		return $session;
+	}
+
+	public static function delete($request) {
         try {
             $token = AuthFactory::get_token($request);
             $cache = SS_Cache::factory('rest_cache');
@@ -42,7 +50,7 @@ class TokenAuth extends Object implements IAuth {
     }
 
     /**
-     * 
+     *
      *
      * @param string $token
      * @throws RestUserException
