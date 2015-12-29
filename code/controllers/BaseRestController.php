@@ -156,6 +156,7 @@ abstract class BaseRestController extends Controller {
                 SS_Log::ERR);
         }
         // serialize content and set body of response
+        $response->addHeader('Content-Type', $serializer->contentType());
         $response->setBody($serializer->serialize($body));
         // set CORS header from config
         $response = $this->addCORSHeaders($response);
