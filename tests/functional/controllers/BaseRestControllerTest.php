@@ -6,7 +6,6 @@
  * @todo: test different serializers, pagination and error handling
  */
 class BaseRestControllerTest extends RestTest {
-    protected $skipTest = false;
 
     public function setUp() {
         parent::setUp();
