@@ -55,7 +55,7 @@ abstract class RestTest extends SapphireTest {
             'Accept' => 'application/json'
         ];
         if($settings['token']) {
-            $settings['Authorization'] = "Bearer {$settings['token']}";
+            $headers['Authorization'] = "Bearer {$settings['token']}";
         }
         $response = Director::test(
             Controller::join_links($this->namespace, $path),
