@@ -37,6 +37,8 @@ abstract class RestTest extends SapphireTest {
      *  * int `code` the expected response code
      *  * string `method` the http method
      *  * ApiSession `session` the test session
+     *  * string `token` the auth token
+     *  * array `postVars` the post data, eg. multi form or files
      * @return array
      * @throws SS_HTTPResponse_Exception
      */
@@ -46,18 +48,23 @@ abstract class RestTest extends SapphireTest {
             'token' => null,
             'method' => 'GET',
             'body' => null,
+            'postVars' => null,
             'code' => 200
         ], $options);
+        $headers = [
+            'Accept' => 'application/json'
+        ];
+        if($settings['token']) {
+            $settings['Authorization'] = "Bearer {$settings['token']}";
+        }
         $response = Director::test(
             Controller::join_links($this->namespace, $path),
-            null,
+            $settings['postVars'],
             $settings['session'],
             $settings['method'],
             $settings['body'],
-            [
-                'Authorization' => "Bearer ".$settings['token'],
-                'Accept' => 'application/json'
-            ]);
+            $headers
+        );
         $this->assertEquals($settings['code'], $response->getStatusCode(), "Wrong status code: {$response->getBody()}");
         return json_decode($response->getBody(), true);
     }
