@@ -45,3 +45,6 @@ privileges.
 For functional tests, you can extend the `RestTest` class and use it to test your application. We recommend to use 
 fixtures for testing like it is explained in the Silverstripe documentation.
 
+## More Information
+
+Yo can find more information in the [wiki](https://github.com/notthatbad/silverstripe-rest-api/wiki).
