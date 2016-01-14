@@ -50,6 +50,7 @@ abstract class BaseRestController extends Controller {
     }
 
     /**
+     *
      */
     public function init() {
         parent::init();
@@ -90,11 +91,9 @@ abstract class BaseRestController extends Controller {
                 // method couldn't found on controller
                 throw new RestUserException("Action '$action' isn't available on class $className.", 404);
             }
-
             if(!$this->checkAccessAction($action)) {
-                throw new RestUserException("Action '$action' isn't allowed on class $className.", 404);
+                throw new RestUserException("Action '$action' isn't allowed on class $className.", 404, 401);
             }
-
             $res = $this->extend('beforeCallActionHandler', $request, $action);
             if ($res) {
                 return reset($res);
@@ -114,13 +113,14 @@ abstract class BaseRestController extends Controller {
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
             ];
+            // log all data
             SS_Log::log(
                 json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
                 SS_Log::INFO);
         } catch(RestSystemException $ex) {
             // a system exception was caught
             $response->addHeader('Content-Type', $serializer->contentType());
-            $response->setStatusCode("500");
+            $response->setStatusCode($ex->getHttpStatusCode());
             $body = [
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
@@ -132,6 +132,7 @@ abstract class BaseRestController extends Controller {
                     'trace' => $ex->getTrace()
                 ]);
             }
+            // log all data
             SS_Log::log(
                 json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
                 SS_Log::WARN);
@@ -150,6 +151,7 @@ abstract class BaseRestController extends Controller {
                     'trace' => $ex->getTrace()
                 ]);
             }
+            // log all data and the trace to get a better understanding of the exception
             SS_Log::log(
                 json_encode(array_merge(
                     $body, ['file' => $ex->getFile(), 'line' => $ex->getLine(),'trace' => $ex->getTrace()])),
@@ -183,6 +185,7 @@ abstract class BaseRestController extends Controller {
     }
 
     /**
+     * Check, if the request is authenticated.
      * @return bool
      * @throws RestSystemException
      */
@@ -191,6 +194,8 @@ abstract class BaseRestController extends Controller {
     }
 
     /**
+     * Check if the user has admin privileges.
+     *
      * @return bool
      * @throws RestSystemException
      */
@@ -199,15 +204,22 @@ abstract class BaseRestController extends Controller {
         return $member && Permission::checkMember($member, 'ADMIN');
     }
 
+    /**
+     * @param SS_HTTPResponse $response the current response object
+     * @return SS_HTTPResponse the response with CORS headers
+     */
     protected function addCORSHeaders($response) {
         $response->addHeader('Access-Control-Allow-Origin', Config::inst()->get('BaseRestController', 'CORSOrigin'));
         $response->addHeader('Access-Control-Allow-Methods', Config::inst()->get('BaseRestController', 'CORSMethods'));
         $response->addHeader('Access-Control-Max-Age', Config::inst()->get('BaseRestController', 'CORSMaxAge'));
         $response->addHeader('Access-Control-Allow-Headers', Config::inst()->get('BaseRestController', 'CORSAllowHeaders'));
-
         return $response;
     }
 
+    /**
+     * Return the current user from the request.
+     * @return Member the current user
+     */
     protected function currentUser() {
         return AuthFactory::createAuth()->current($this->request);
     }
