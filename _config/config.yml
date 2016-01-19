@@ -25,3 +25,6 @@ BaseRestController:
   CORSMaxAge: '1000'
   CORSAllowHeaders: 'Content-Type, Authorization, X-Requested-With'
   Owner: Member
+SessionValidator:
+  email_name: email
+  password_name: password

@@ -159,6 +159,7 @@ abstract class BaseRestController extends Controller {
         }
         // serialize content and set body of response
         $response->addHeader('Content-Type', $serializer->contentType());
+        // TODO: body could be an exception; check it before the response is generated
         $response->setBody($serializer->serialize($body));
         // set CORS header from config
         $response = $this->addCORSHeaders($response);
