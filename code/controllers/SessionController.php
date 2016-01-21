@@ -2,6 +2,7 @@
 
 /**
  * ApiSession controller is the controller for the session resource.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SessionController extends BaseRestController {
 

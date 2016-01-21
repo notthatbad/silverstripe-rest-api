@@ -3,6 +3,7 @@
 /**
  * Tests for the rest validation helper.
  * @todo: add more tests
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class RestValidatorHelperTest extends SapphireTest {
 

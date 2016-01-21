@@ -2,6 +2,7 @@
 
 /**
  * Serializer for json.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class JsonSerializer implements IRestSerializer {
 

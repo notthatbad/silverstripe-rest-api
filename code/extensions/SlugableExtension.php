@@ -5,6 +5,7 @@
  *
  * The data objects need a Title attribute or getTitle method, which will be used to generate the slug. If no title is
  * provided, the extension uses a generic combination with class name and object id.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SlugableExtension extends DataExtension {
     private static $db = [

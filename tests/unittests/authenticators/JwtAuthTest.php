@@ -3,6 +3,7 @@
 /**
  * Test the JWT auth mechanism
  * @todo: add more tests
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class JwtAuthTest extends SapphireTest {
 

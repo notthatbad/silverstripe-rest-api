@@ -2,6 +2,7 @@
 
 /**
  * Useful extensions for data lists.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class DataListExtension extends Extension {
 

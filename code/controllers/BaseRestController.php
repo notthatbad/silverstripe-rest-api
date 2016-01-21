@@ -2,6 +2,7 @@
 
 /**
  * Base class for the rest resource controllers.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 abstract class BaseRestController extends Controller {
 

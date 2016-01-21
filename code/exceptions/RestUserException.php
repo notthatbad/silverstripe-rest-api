@@ -2,6 +2,7 @@
 
 /**
  * The user exception can be used for indicating the wrong usage of the rest api.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class RestUserException extends Exception {
 

@@ -2,6 +2,7 @@
 
 /**
  * Class SessionValidator
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SessionValidator implements IRestValidator {
     const MinPasswordLength = 3;
@@ -16,4 +17,4 @@ class SessionValidator implements IRestValidator {
             'Password' => $password
         ];
     }
-} 
+}
