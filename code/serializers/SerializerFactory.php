@@ -2,6 +2,7 @@
 
 /**
  * Factory for different kind of rest serializers.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SerializerFactory {
     private static $lookup = [

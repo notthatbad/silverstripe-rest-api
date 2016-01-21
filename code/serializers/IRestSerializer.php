@@ -2,6 +2,7 @@
 
 /**
  * Provides methods for serializing data.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 interface IRestSerializer {
     /**

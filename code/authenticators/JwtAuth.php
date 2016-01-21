@@ -4,6 +4,7 @@
  * Authentication mechanism using a token in the request header and validates it on every request.
  *
  * The mechanism works stateless. JWT is described in RFC 7519.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class JwtAuth extends Object implements IAuth {
 

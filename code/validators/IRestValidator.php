@@ -2,6 +2,7 @@
 
 /**
  * Interface for data validators in the rest api.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 interface IRestValidator {
     /**

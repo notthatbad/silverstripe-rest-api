@@ -2,6 +2,7 @@
 
 /**
  * Authentication mechanism which uses the internal Silverstripe authentication (session based).
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SessionAuth extends Object implements IAuth {
 

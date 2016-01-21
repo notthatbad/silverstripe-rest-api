@@ -4,6 +4,7 @@
  * Tests for the base rest controller.
  *
  * @todo: test different serializers, pagination and error handling
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class BaseRestControllerTest extends RestTest {
 

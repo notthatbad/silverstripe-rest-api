@@ -2,6 +2,7 @@
 
 /**
  * Serializer for html.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class HtmlSerializer extends ViewableData implements IRestSerializer {
 

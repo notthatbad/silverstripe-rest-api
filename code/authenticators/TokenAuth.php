@@ -2,6 +2,7 @@
 
 /**
  * Authentication mechanism using a token in the request header. Valid tokens are saved in cache.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class TokenAuth extends Object implements IAuth {
 

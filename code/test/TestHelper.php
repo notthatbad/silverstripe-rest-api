@@ -2,6 +2,7 @@
 
 /**
  * Test Helper class provides some helpful functions for tests.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class TestHelper {
 

@@ -2,6 +2,7 @@
 
 /**
  * The system exception can be used for showing a system error like a missing file or a broken connection.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class RestSystemException extends Exception {
     /*

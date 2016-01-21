@@ -2,6 +2,7 @@
 
 /**
  * Some generic validators for incoming data.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class RestValidatorHelper {
     const DefaultMaxLength = 1600;

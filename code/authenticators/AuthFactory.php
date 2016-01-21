@@ -2,6 +2,7 @@
 
 /**
  * Factory for different kind of rest authenticators.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class AuthFactory extends Object {
 

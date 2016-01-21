@@ -2,6 +2,7 @@
 
 /**
  * Interface for authentication mechanisms.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 interface IAuth {
 

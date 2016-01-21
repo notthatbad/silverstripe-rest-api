@@ -2,6 +2,7 @@
 
 /**
  * The session formatter can format a session into a representation which is consumable from a IRestSerializer.
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SessionFormatter implements IRestSerializeFormatter {
 
