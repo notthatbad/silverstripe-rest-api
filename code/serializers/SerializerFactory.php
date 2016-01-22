@@ -7,7 +7,9 @@
 class SerializerFactory {
     private static $lookup = [
         'json' => 'application/json',
-        'html' => 'text/html'
+        'html' => 'text/html',
+        'xml' => 'application/xml',
+        'yaml' => 'application/yaml'
     ];
 
     /**
