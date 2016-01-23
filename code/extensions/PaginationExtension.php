@@ -26,7 +26,7 @@ class PaginationExtension extends Extension {
      * @param SS_HTTPRequest $request
      * @return int the offset value
      */
-    protected static function offset($request) {
+    public function offset($request) {
         $offset = (int)$request->getVar('offset');
         if($offset && is_int($offset) && $offset >= 0) {
             return $offset;
@@ -41,7 +41,7 @@ class PaginationExtension extends Extension {
      * @param SS_HTTPRequest $request
      * @return int the limit value
      */
-    protected static function limit($request) {
+    public function limit($request) {
         $limit = (int)$request->getVar('limit');
         if($limit && is_int($limit) && $limit > 0) {
             return $limit;
