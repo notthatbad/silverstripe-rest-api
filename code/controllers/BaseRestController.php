@@ -6,6 +6,8 @@
  */
 abstract class BaseRestController extends Controller {
 
+    private static $https_only = true;
+
     /**
      * The default limit.
      * Can be overridden in children.
@@ -55,6 +57,14 @@ abstract class BaseRestController extends Controller {
      */
     public function init() {
         parent::init();
+        // check for https
+        if($this->config()->https_only && !Director::is_https()) {
+            $response = $this->getResponse();
+            $response->setStatusCode('403', 'http request not allowed');
+            $response->setBody("Request over HTTP is not allowed. Please switch to https.");
+            $response->output();
+            exit;
+        }
         // check for CORS options request
         if ($this->request->httpMethod() === 'OPTIONS' ) {
             // create direct response without requesting any controller
