@@ -11,6 +11,8 @@ Injector:
     class: MemberAuthenticator
   SessionValidator:
     class: SessionValidator
+  PermissionChecks:
+    class: SilverstripePermission
 TokenAuth:
   DevToken: foobarbaz
 JwtAuth:

@@ -174,7 +174,7 @@ abstract class BaseRestController extends Controller {
      */
     protected function isAdmin() {
         $member = $this->currentUser();
-        return $member && Permission::checkMember($member, 'ADMIN');
+        return $member && Injector::inst()->get('PermissionChecks')->isAdmin;
     }
 
     /**
