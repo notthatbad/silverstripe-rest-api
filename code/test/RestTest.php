@@ -12,6 +12,10 @@ abstract class RestTest extends SapphireTest {
      */
     protected $namespace = 'v/1';
 
+    /**
+     * @var string
+     * @deprecated will be removed in 0.7.0; use RestTest::createSession()
+     */
     protected $defaultToken;
 
     /**
