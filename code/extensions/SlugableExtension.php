@@ -69,7 +69,7 @@ class SlugableExtension extends DataExtension {
     protected function lookForExistingURLSegment($urlSegment, $id) {
         return $this->owner->get()->filter(
             'URLSegment', $urlSegment
-        )->exclude('ID', $id)->exists();
+        )->exclude('ID', is_null($id) ? 0 : $id)->exists();
     }
 
     /**
