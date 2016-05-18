@@ -13,14 +13,21 @@
  * @author Christian Blank <c.blank@notthatbad.net>
  */
 abstract class NestedResourceRestController extends BaseRestController {
-
+    /**
+     * @var string the error message if no id was provided for the request
+     */
     protected static $no_id_message = "No id provided.";
+    /**
+     * @var int the error code for a not provided id
+     */
     protected static $no_id_error = 404;
 
     /**
-     * @param SS_HTTPRequest $request
-     * @param string $action
-     * @return array
+     * Get called by the action handler of BaseRestController. Tries to fetch the root resource.
+     *
+     * @param SS_HTTPRequest $request a http request
+     * @param string $action the name of the action (eg. post, put, get, delete)
+     * @return array the result of the action call
      * @throws RestSystemException
      * @throws RestUserException
      */
@@ -34,11 +41,13 @@ abstract class NestedResourceRestController extends BaseRestController {
             SS_Log::log("NoResourceError was not handled inside the controller", SS_Log::WARN);
             throw new RestSystemException("NoResourceError was not handled inside the controller", 501);
         }
+        // call the action and inject the root resource
         return $this->$action($request, $resource);
     }
 
     /**
      *
+     * The result of this method will be injected in all method calls in the controller.
      *
      * @param string $id the `ID` param in the request
      * @return mixed
