@@ -66,18 +66,18 @@ abstract class BaseRestController extends Controller {
             if(!$this->checkAccessAction($action)) {
                 throw new RestUserException("Action '$action' isn't allowed on class $className.", 404, 401);
             }
-            $res = $this->extend('beforeCallActionHandler', $request, $action);
-            if ($res) {
-                return reset($res);
+            $actionResult = null;
+            if(method_exists($this, 'beforeCallActionHandler')) {
+                // call before action hook
+                $actionResult = $this->beforeCallActionHandler($request, $action);
             }
-            // perform action
-            $actionRes = $this->$action($request);
-            $res = $this->extend('afterCallActionHandler', $request, $action);
-            if ($res) {
-                return reset($res);
+            // if action hook contains data it will be used as result, otherwise the action handler will be called
+            if(!$actionResult) {
+                // perform action
+                $actionResult = $this->$action($request);
             }
             // set content type
-            $body = $actionRes;
+            $body = $actionResult;
         } catch(RestUserException $ex) {
             // a user exception was caught
             $response->setStatusCode($ex->getHttpStatusCode());
