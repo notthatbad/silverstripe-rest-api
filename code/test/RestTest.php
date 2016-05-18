@@ -13,12 +13,6 @@ abstract class RestTest extends SapphireTest {
     protected $namespace = 'v/1';
 
     /**
-     * @var string
-     * @deprecated will be removed in 0.7.0; use RestTest::createSession()
-     */
-    protected $defaultToken;
-
-    /**
      * The route to the session without the namespace.
      * @var string
      */
@@ -26,7 +20,6 @@ abstract class RestTest extends SapphireTest {
 
     public function setUp() {
         parent::setUp();
-        $this->defaultToken = Config::inst()->get('TokenAuth', 'DevToken');
         // clear cache
         SS_Cache::factory('rest_cache')->clean(Zend_Cache::CLEANING_MODE_ALL);
     }

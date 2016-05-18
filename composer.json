@@ -2,7 +2,7 @@
     "name": "ntb/silverstripe-rest-api",
     "description": "REST api module for Silverstripe",
     "type": "silverstripe-module",
-    "homepage": "https://github.com/1blankz7/silverstripe-rest-api",
+    "homepage": "https://github.com/notthatbad/silverstripe-rest-api/releases",
     "keywords": [
         "silverstripe",
         "rest",

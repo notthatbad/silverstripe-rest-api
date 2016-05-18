@@ -30,3 +30,5 @@ BaseRestController:
 SessionValidator:
   email_name: email
   password_name: password
+NestedResourceRestController:
+  root_resource_id_field: ID
