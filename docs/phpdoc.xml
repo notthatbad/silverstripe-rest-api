@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>ntb/silverstripe-rest-api reference</title>
+    <parser>
+        <target>reference/cache</target>
+        <encoding>utf8</encoding>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+    </parser>
+    <transformer>
+        <target>reference</target>
+    </transformer>
+    <files>
+        <directory>..</directory>
+        <ignore>tests/*</ignore>
+        <ignore>docs/*</ignore>
+        <ignore>framework/*</ignore>
+        <ignore>vendor/*</ignore>
+    </files>
+</phpdoc>
