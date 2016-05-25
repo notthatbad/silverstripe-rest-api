@@ -20,4 +20,12 @@ interface IRestSerializer {
      * @return string
      */
     public function contentType();
+
+    /**
+     * Indicates if the serializer is active.
+     * Serializers can be deactivated to use another implementation for the same mime type.
+     *
+     * @return boolean
+     */
+    public function active();
 }

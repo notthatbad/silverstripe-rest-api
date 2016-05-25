@@ -22,8 +22,9 @@ class SerializerFactory {
     public static function create($mimeType='application/json') {
         $availableSerializers = ClassInfo::implementorsOf('IRestSerializer');
         foreach($availableSerializers as $serializer) {
+            /** @var IRestSerializer $instance */
             $instance = new $serializer();
-            if($instance->contentType() == $mimeType) {
+            if($instance->active() && $instance->contentType() === $mimeType) {
                 return $instance;
             }
         }

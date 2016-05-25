@@ -5,8 +5,13 @@ use Symfony\Component\Yaml\Dumper;
  * Serializer for yaml.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class YamlSerializer implements IRestSerializer {
+class YamlSerializer extends Object implements IRestSerializer {
 
+    /**
+     * @config
+     */
+    private static $is_active = true;
+    
     /**
      * The content type.
      * @var string
@@ -26,5 +31,15 @@ class YamlSerializer implements IRestSerializer {
 
     public function contentType() {
         return $this->contentType;
+    }
+
+    /**
+     * Indicates if the serializer is active.
+     * Serializers can be deactivated to use another implementation for the same mime type.
+     *
+     * @return boolean
+     */
+    public function active() {
+        return $this->config()->get('is_active');
     }
 }
