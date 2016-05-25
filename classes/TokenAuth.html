@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">106</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">110</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1860453823"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1334821"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1860453823" class="accordion-body collapse in">
+            <div id="namespace-1334821" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -296,26 +296,28 @@
             <article class="method">
                 <h3 class="public ">authenticate()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">authenticate(  <span class="argument">$email</span>,   <span class="argument">$password</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">authenticate(string  <span class="argument">$email</span>, string  <span class="argument">$password</span>) : \ApiSession</pre>
                 <p><em></em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$email </td>
-                                <td></td>
+                                <td><p>the email of the</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$password </td>
                                 <td></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/ApiSession.html">\ApiSession</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -373,21 +375,23 @@
             <article class="method">
                 <h3 class="public ">delete()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">delete(  <span class="argument">$request</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">delete(\SS_HTTPRequest  <span class="argument">$request</span>) : boolean</pre>
                 <p><em></em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>\SS_HTTPRequest</td>
                                 <td>$request </td>
                                 <td></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -408,21 +412,23 @@
             <article class="method">
                 <h3 class="public ">current()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">current(  <span class="argument">$request</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">current(\SS_HTTPRequest  <span class="argument">$request</span>) : \Member</pre>
                 <p><em></em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>\SS_HTTPRequest</td>
                                 <td>$request </td>
                                 <td></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    \Member
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -528,7 +534,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on May 20th, 2016 at 10:28.
+                    on May 25th, 2016 at 19:02.
                 </section>
             </section>
         </section>
