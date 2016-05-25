@@ -4,8 +4,13 @@
  * Serializer for json.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class JsonSerializer implements IRestSerializer {
+class JsonSerializer extends Object implements IRestSerializer {
 
+    /**
+     * @config
+     */
+    private static $is_active = true;
+    
     /**
      * The content type.
      * @var string
@@ -24,5 +29,15 @@ class JsonSerializer implements IRestSerializer {
 
     public function contentType() {
         return $this->contentType;
+    }
+
+    /**
+     * Indicates if the serializer is active.
+     * Serializers can be deactivated to use another implementation for the same mime type.
+     *
+     * @return boolean
+     */
+    public function active() {
+        return $this->config()->get('is_active');
     }
 }
