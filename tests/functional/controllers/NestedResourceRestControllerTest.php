@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * @author Christian Blank <c.blank@notthatbad.net>
  */
@@ -7,8 +9,8 @@ class NestedResourceRestControllerTest extends RestTest {
 
     public function setUp() {
         parent::setUp();
-        Config::inst()->update('Director', 'rules', [
-            'v/1/RestTestRoute/$ID/Nested/$OtherID' => 'NestedTestController',
+        \Config::inst()->update('Director', 'rules', [
+            'v/1/RestTestRoute/$ID/Nested/$OtherID' => 'Ntb\RestAPI\NestedTestController',
         ]);
     }
 
@@ -34,7 +36,7 @@ class NestedResourceRestControllerTest extends RestTest {
     }
 }
 
-class NestedTestController extends NestedResourceRestController implements TestOnly {
+class NestedTestController extends NestedResourceRestController implements \TestOnly {
 
     private static $allowed_actions = [
         'delete' => true,

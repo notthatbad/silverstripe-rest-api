@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Interface for authentication mechanisms.
  * @author Christian Blank <c.blank@notthatbad.net>

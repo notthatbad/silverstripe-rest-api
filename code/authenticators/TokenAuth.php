@@ -1,20 +1,22 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Authentication mechanism using a token in the request header. Valid tokens are saved in cache.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class TokenAuth extends Object implements IAuth {
+class TokenAuth extends \Object implements IAuth {
 
     public static function authenticate($email, $password) {
-        $authenticator = Injector::inst()->get('ApiMemberAuthenticator');
+        $authenticator = \Injector::inst()->get('ApiMemberAuthenticator');
         if($user = $authenticator->authenticate(['Password' => $password, 'Email' => $email])) {
 	        return self::createSession($user);
         }
     }
 
 	/**
-	 * @param Member $user
+	 * @param \Member $user
 	 * @return ApiSession
 	 */
 	public static function createSession($user) {
@@ -24,7 +26,7 @@ class TokenAuth extends Object implements IAuth {
 		$session->Token = AuthFactory::generate_token($user);
 
 		// save session
-		$cache = SS_Cache::factory('rest_cache');
+		$cache = \SS_Cache::factory('rest_cache');
 		$cache->save(json_encode(['token' => $session->Token, 'user' => $session->User->ID]), $session->Token);
 
 		return $session;
@@ -33,10 +35,10 @@ class TokenAuth extends Object implements IAuth {
 	public static function delete($request) {
         try {
             $token = AuthFactory::get_token($request);
-            $cache = SS_Cache::factory('rest_cache');
+            $cache = \SS_Cache::factory('rest_cache');
             $cache->remove($token);
-        } catch(Exception $e) {
-            SS_Log::log($e->getMessage(), SS_Log::INFO);
+        } catch(\Exception $e) {
+            \SS_Log::log($e->getMessage(), \SS_Log::INFO);
         }
     }
 
@@ -44,8 +46,8 @@ class TokenAuth extends Object implements IAuth {
         try {
             $token = AuthFactory::get_token($request);
             return self::get_member_from_token($token);
-        } catch(Exception $e) {
-            SS_Log::log($e->getMessage(), SS_Log::INFO);
+        } catch(\Exception $e) {
+            \SS_Log::log($e->getMessage(), \SS_Log::INFO);
         }
         return false;
     }
@@ -55,20 +57,20 @@ class TokenAuth extends Object implements IAuth {
      *
      * @param string $token
      * @throws RestUserException
-     * @return Member
+     * @return \Member
      */
     private static function get_member_from_token($token) {
-        $cache = SS_Cache::factory('rest_cache');
+        $cache = \SS_Cache::factory('rest_cache');
         if($data = $cache->load($token)) {
             $data = json_decode($data, true);
             $id = (int)$data['user'];
-            $user = DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
+            $user = \DataObject::get(\Config::inst()->get('BaseRestController', 'Owner'))->byID($id);
             if(!$user) {
                 throw new RestUserException("Owner not found in database", 404);
             }
             return $user;
-        } else if(Director::isDev() && $token == Config::inst()->get('TokenAuth', 'DevToken')) {
-            return DataObject::get(Config::inst()->get('BaseRestController', 'Owner'))->first();
+        } else if(\Director::isDev() && $token == \Config::inst()->get('TokenAuth', 'DevToken')) {
+            return \DataObject::get(\Config::inst()->get('BaseRestController', 'Owner'))->first();
         }
         throw new RestUserException("Owner not found in database", 404);
     }

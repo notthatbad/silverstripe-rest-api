@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Tests for the base rest controller.
  *
@@ -10,8 +12,8 @@ class BaseRestControllerTest extends RestTest {
 
     public function setUp() {
         parent::setUp();
-        Config::inst()->update('Director', 'rules', [
-            'v/1/RestTestRoute/$ID/$OtherID' => 'TestController',
+        \Config::inst()->update('Director', 'rules', [
+            'v/1/RestTestRoute/$ID/$OtherID' => 'Ntb\RestAPI\TestController',
         ]);
     }
 
@@ -44,7 +46,7 @@ class BaseRestControllerTest extends RestTest {
     }
 }
 
-class TestController extends BaseRestController implements TestOnly {
+class TestController extends BaseRestController implements \TestOnly {
 
     private static $allowed_actions = array (
         'post' => true,

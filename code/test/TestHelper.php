@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Test Helper class provides some helpful functions for tests.
  * @author Christian Blank <c.blank@notthatbad.net>
@@ -14,14 +16,14 @@ class TestHelper {
      * @author VladaHejda
      */
     public static function assertException(callable $callback, $expectedException = 'Exception', $expectedCode = null, $expectedMessage = null) {
-        $self = new SapphireTest;
-        if (!ClassInfo::exists($expectedException)) {
+        $self = new \SapphireTest;
+        if (!\ClassInfo::exists($expectedException)) {
             $self->fail(sprintf('An exception of type "%s" does not exist.', $expectedException));
         }
         try {
             $callback();
         } catch (\Exception $e) {
-            $class = ClassInfo::class_name($e);
+            $class = \ClassInfo::class_name($e);
             $message = $e->getMessage();
             $code = $e->getCode();
             $errorMessage = 'Failed asserting the class of exception';

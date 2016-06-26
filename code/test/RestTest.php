@@ -1,10 +1,12 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Rest test class can work as base class for your functional tests. It provides some helpful methods to test your rest
  * api more easily.
  */
-abstract class RestTest extends SapphireTest {
+abstract class RestTest extends \SapphireTest {
 
     /**
      * The namespace of your api.
@@ -21,7 +23,7 @@ abstract class RestTest extends SapphireTest {
     public function setUp() {
         parent::setUp();
         // clear cache
-        SS_Cache::factory('rest_cache')->clean(Zend_Cache::CLEANING_MODE_ALL);
+        \SS_Cache::factory('rest_cache')->clean(\Zend_Cache::CLEANING_MODE_ALL);
     }
 
 
@@ -37,7 +39,7 @@ abstract class RestTest extends SapphireTest {
      *  * string `token` the auth token
      *  * array `postVars` the post data, eg. multi form or files
      * @return array
-     * @throws SS_HTTPResponse_Exception
+     * @throws \SS_HTTPResponse_Exception
      */
     protected function makeApiRequest($path, $options=[]) {
         $settings = array_merge([
@@ -54,8 +56,8 @@ abstract class RestTest extends SapphireTest {
         if($settings['token']) {
             $headers['Authorization'] = "Bearer {$settings['token']}";
         }
-        $response = Director::test(
-            Controller::join_links($this->namespace, $path),
+        $response = \Director::test(
+            \Controller::join_links($this->namespace, $path),
             $settings['postVars'],
             $settings['session'],
             $settings['method'],

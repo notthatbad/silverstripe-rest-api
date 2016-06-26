@@ -1,10 +1,12 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * The system exception can be used for showing a system error like a missing file or a broken connection.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class RestSystemException extends Exception {
+class RestSystemException extends \Exception {
     /*
      * @var int - override the default http status code if needed
      */
