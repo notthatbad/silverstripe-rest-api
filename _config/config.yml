@@ -21,6 +21,10 @@ JwtAuth:
   Issuer: "rest.ntb.dev"
   ExpireTime: 1209600
   DevToken: foobarbaz
+HttpAuth:
+  Realm: RestApiAuth
+  #PermissionCode: null
+  #TryUsingSessionLogin: false
 BaseRestController:
   CORSOrigin: '*'
   CORSMethods: 'GET, PUT, POST, DELETE, OPTIONS'
