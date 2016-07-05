@@ -58,7 +58,13 @@ class HttpAuth extends Object implements IAuth {
             $permissionCode = Config::inst()->get('HttpAuth', 'PermissionCode');
             $isRunningTests = (class_exists('SapphireTest', false) && SapphireTest::is_running_test());
             $tryUsingSessionLogin = $isRunningTests || Config::inst()->get('HttpAuth', 'TryUsingSessionLogin');
-            return BasicAuth::requireLogin($realm, $permissionCode, $tryUsingSessionLogin);
+
+            try{
+                $member = BasicAuth::requireLogin($realm, $permissionCode, $tryUsingSessionLogin);
+                return $member;
+            } catch (Exception $ex) {
+                return null;
+            }
         }
 
 }
