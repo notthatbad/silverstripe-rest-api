@@ -14,7 +14,7 @@ class SessionController extends BaseRestController {
     );
 
 	/**
-	 * @param SS_HTTPRequest $request
+	 * @param \SS_HTTPRequest $request
 	 * @return array
 	 * @throws RestSystemException
 	 * @throws RestUserException

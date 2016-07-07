@@ -22,7 +22,7 @@ class SerializerFactory {
      * @throws RestUserException
      */
     public static function create($mimeType='application/json') {
-        $availableSerializers = \ClassInfo::implementorsOf('IRestSerializer');
+        $availableSerializers = \ClassInfo::implementorsOf('Ntb\RestAPI\IRestSerializer');
         foreach($availableSerializers as $serializer) {
             /** @var IRestSerializer $instance */
             $instance = new $serializer();

@@ -1,6 +1,8 @@
 <?php
 
 namespace Ntb\RestAPI;
+use Member;
+use SS_HTTPRequest;
 
 /**
  * Interface for authentication mechanisms.

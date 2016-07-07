@@ -1,5 +1,8 @@
 <?php
 
+namespace Ntb\RestAPI;
+use Config;
+
 /**
  * Class SessionValidator
  * @author Christian Blank <c.blank@notthatbad.net>
