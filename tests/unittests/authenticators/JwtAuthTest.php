@@ -1,4 +1,5 @@
 <?php
+use Ntb\RestAPI\JwtAuth;
 
 /**
  * Test the JWT auth mechanism

@@ -1,4 +1,6 @@
 <?php
+use Ntb\RestAPI\RestValidatorHelper;
+use Ntb\RestAPI\TestHelper;
 
 /**
  * Tests for the rest validation helper.

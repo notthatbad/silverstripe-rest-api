@@ -1,4 +1,5 @@
 <?php
+use Ntb\RestAPI\YamlSerializer;
 
 /**
  * Tests for the yaml serializer.
