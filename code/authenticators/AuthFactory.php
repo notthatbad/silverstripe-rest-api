@@ -19,8 +19,8 @@ class AuthFactory extends \Object {
 
     /**
      * Generates an encrypted random token.
-     * @param Member $user
-     * @throws PasswordEncryptor_NotFoundException
+     * @param \Member $user
+     * @throws \PasswordEncryptor_NotFoundException
      * @return string
      */
     public static function generate_token($user) {
