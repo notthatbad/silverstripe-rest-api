@@ -2,6 +2,12 @@
 
 namespace Ntb\RestAPI;
 
+use Director;
+use HTMLText;
+use SS_HTTPRequest;
+use SS_HTTPResponse;
+use SS_Log;
+
 /**
  * Base class for the rest resource controllers.
  * @author Christian Blank <c.blank@notthatbad.net>
@@ -21,7 +27,7 @@ abstract class BaseRestController extends \Controller {
     public function init() {
         parent::init();
         // check for https
-        if($this->config()->https_only && !\Director::is_https()) {
+        if($this->config()->https_only && !Director::is_https()) {
             $response = $this->getResponse();
             $response->setStatusCode('403', 'http request not allowed');
             $response->setBody("Request over HTTP is not allowed. Please switch to https.");
@@ -43,9 +49,9 @@ abstract class BaseRestController extends \Controller {
      * handleAction implementation for rest controllers. This handles the requested action differently then the standard
      * implementation.
      *
-     * @param \SS_HTTPRequest $request
+     * @param SS_HTTPRequest $request
      * @param string $action
-     * @return \HTMLText|\SS_HTTPResponse
+     * @return HTMLText|SS_HTTPResponse
      */
     protected function handleAction($request, $action) {
         foreach($request->latestParams() as $k => $v) {
@@ -88,9 +94,9 @@ abstract class BaseRestController extends \Controller {
                 'code' => $ex->getCode()
             ];
             // log all data
-            \SS_Log::log(
+            SS_Log::log(
                 json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
-                \SS_Log::INFO);
+                SS_Log::INFO);
         } catch(RestSystemException $ex) {
             // a system exception was caught
             $response->addHeader('Content-Type', $serializer->contentType());
@@ -107,9 +113,9 @@ abstract class BaseRestController extends \Controller {
                 ]);
             }
             // log all data
-            \SS_Log::log(
+            SS_Log::log(
                 json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
-                \SS_Log::WARN);
+                SS_Log::WARN);
         } catch(\Exception $ex) {
             // an unexpected exception was caught
             $response->addHeader('Content-Type', $serializer->contentType());
@@ -118,7 +124,7 @@ abstract class BaseRestController extends \Controller {
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode()
             ];
-            if(\Director::isDev()) {
+            if(Director::isDev()) {
                 $body = array_merge($body, [
                     'file' => $ex->getFile(),
                     'line' => $ex->getLine(),
@@ -126,10 +132,10 @@ abstract class BaseRestController extends \Controller {
                 ]);
             }
             // log all data and the trace to get a better understanding of the exception
-            \SS_Log::log(
+            SS_Log::log(
                 json_encode(array_merge(
                     $body, ['file' => $ex->getFile(), 'line' => $ex->getLine(),'trace' => $ex->getTrace()])),
-                \SS_Log::ERR);
+                SS_Log::ERR);
         }
         // serialize content and set body of response
         $response->addHeader('Content-Type', $serializer->contentType());

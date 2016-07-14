@@ -26,13 +26,13 @@ class SerializerFactoryTest extends SapphireTest {
     public function testEmptyMimeType() {
         TestHelper::assertException(function() {
             SerializerFactory::create("");
-        }, 'RestUserException');
+        }, 'Ntb\RestAPI\RestUserException');
     }
 
     public function testUnsupportedMimeType() {
         TestHelper::assertException(function() {
             SerializerFactory::create("foo/bar");
-        }, 'RestUserException');
+        }, 'Ntb\RestAPI\RestUserException');
     }
 
     public function testCreateFromRequestWithAcceptHeader() {

@@ -36,7 +36,6 @@ class SessionController extends BaseRestController {
         } catch(RestUserException $e) {
 	        throw $e;
         } catch(\Exception $e) {
-            error_log($e->getMessage());
             throw new RestSystemException($e->getMessage(), $e->getCode() ?: 500);
         }
         $meta = ['timestamp' => time()];

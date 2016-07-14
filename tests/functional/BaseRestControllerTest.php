@@ -1,6 +1,7 @@
 <?php
 
 namespace Ntb\RestAPI;
+use Config;
 
 /**
  * Tests for the base rest controller.
@@ -12,7 +13,7 @@ class BaseRestControllerTest extends RestTest {
 
     public function setUp() {
         parent::setUp();
-        \Config::inst()->update('Director', 'rules', [
+        Config::inst()->update('Director', 'rules', [
             'v/1/RestTestRoute/$ID/$OtherID' => 'Ntb\RestAPI\TestController',
         ]);
     }
