@@ -1,10 +1,9 @@
 <?php
-use Ntb\RestAPI\HtmlSerializer;
-use Ntb\RestAPI\JsonSerializer;
-use Ntb\RestAPI\SerializerFactory;
-use Ntb\RestAPI\TestHelper;
-use Ntb\RestAPI\XmlSerializer;
-use Ntb\RestAPI\YamlSerializer;
+
+namespace Ntb\RestAPI;
+
+use SapphireTest;
+use SS_HTTPRequest;
 
 /**
  * Tests for the serializer factory.

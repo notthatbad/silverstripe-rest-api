@@ -6,13 +6,13 @@ After:
 ---
 Injector:
   Authenticator:
-    class: TokenAuth
+    class: Ntb\RestAPI\TokenAuth
   ApiMemberAuthenticator:
     class: MemberAuthenticator
   SessionValidator:
-    class: SessionValidator
+    class: Ntb\RestAPI\SessionValidator
   PermissionChecks:
-    class: SilverstripePermission
+    class: Ntb\RestAPI\SilverstripePermission
 TokenAuth:
   DevToken: foobarbaz
 JwtAuth:

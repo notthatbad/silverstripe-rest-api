@@ -1,6 +1,7 @@
 <?php
 
 namespace Ntb\RestAPI;
+
 use Config;
 
 /**

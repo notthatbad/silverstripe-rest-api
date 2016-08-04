@@ -1,5 +1,11 @@
 <?php
 
+namespace Ntb\RestAPI;
+
+use Object;
+use SapphireTest;
+use SS_HTTPRequest;
+use TestOnly;
 
 class PaginationExtensionTest extends SapphireTest {
 

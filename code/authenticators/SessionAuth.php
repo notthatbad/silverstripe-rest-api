@@ -33,6 +33,11 @@ class SessionAuth extends \Object implements IAuth {
 		return $session;
 	}
 
+    /**
+     * @param \SS_HTTPRequest $request
+     * @return bool
+     * @throws RestUserException
+     */
 	public static function delete($request) {
         $owner = self::current($request);
         if(!$owner) {
@@ -41,7 +46,6 @@ class SessionAuth extends \Object implements IAuth {
         $owner->logOut();
         return true;
     }
-
 
     /**
      * @param \SS_HTTPRequest $request

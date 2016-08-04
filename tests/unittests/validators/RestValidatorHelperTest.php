@@ -1,6 +1,8 @@
 <?php
-use Ntb\RestAPI\RestValidatorHelper;
-use Ntb\RestAPI\TestHelper;
+
+namespace Ntb\RestAPI;
+
+use SapphireTest;
 
 /**
  * Tests for the rest validation helper.

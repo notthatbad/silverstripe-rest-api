@@ -1,5 +1,8 @@
 <?php
-use Ntb\RestAPI\YamlSerializer;
+
+namespace Ntb\RestAPI;
+
+use SapphireTest;
 
 /**
  * Tests for the yaml serializer.
