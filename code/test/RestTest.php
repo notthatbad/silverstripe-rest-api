@@ -81,7 +81,7 @@ abstract class RestTest extends \SapphireTest {
             'password' => $password
         ];
         $dataString = json_encode($data);
-        $result = $this->makeApiRequest('sessions', ['body' => $dataString, 'method' => 'POST']);
+        $result = $this->makeApiRequest('SessionRoute', ['body' => $dataString, 'method' => 'POST']);
         return $result['session'];
     }
 }

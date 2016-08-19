@@ -66,7 +66,7 @@ class SessionEndpointTest extends RestTest {
     public function testTryCreateSessionWithWrongPassword() {
         $data = [
             'email' => 'considine.colby@gmail.com',
-            'password' => 'wrong'
+            'password' => 'wrongPass'
         ];
 
         $dataString = json_encode($data);
