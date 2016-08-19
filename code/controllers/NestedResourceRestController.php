@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * The nested resource controller can help you to avoid some boilerplate in nested resources in you rest api.
  *
@@ -25,20 +27,20 @@ abstract class NestedResourceRestController extends BaseRestController {
     /**
      * Get called by the action handler of BaseRestController. Tries to fetch the root resource.
      *
-     * @param SS_HTTPRequest $request a http request
+     * @param \SS_HTTPRequest $request a http request
      * @param string $action the name of the action (eg. post, put, get, delete)
      * @return array the result of the action call
      * @throws RestSystemException
      * @throws RestUserException
      */
-    public final function beforeCallActionHandler(SS_HTTPRequest $request, $action) {
-        $id = $request->param(Config::inst()->get('NestedResourceRestController', 'root_resource_id_field'));
+    public final function beforeCallActionHandler(\SS_HTTPRequest $request, $action) {
+        $id = $request->param(\Config::inst()->get('NestedResourceRestController', 'root_resource_id_field'));
         if(!$id) {
             throw new RestUserException(static::$no_id_message, static::$no_id_message);
         }
         $resource = $this->getRootResource($id);
         if(!$resource) {
-            SS_Log::log("NoResourceError was not handled inside the controller", SS_Log::WARN);
+            \SS_Log::log("NoResourceError was not handled inside the controller", \SS_Log::WARN);
             throw new RestSystemException("NoResourceError was not handled inside the controller", 501);
         }
         // call the action and inject the root resource

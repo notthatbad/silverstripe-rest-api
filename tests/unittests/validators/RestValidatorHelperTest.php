@@ -1,5 +1,9 @@
 <?php
 
+namespace Ntb\RestAPI;
+
+use SapphireTest;
+
 /**
  * Tests for the rest validation helper.
  * @todo: add more tests

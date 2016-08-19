@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Extension for data objects which should be identifiable by a slug.
  *
@@ -7,7 +9,7 @@
  * provided, the extension uses a generic combination with class name and object id.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class SlugableExtension extends DataExtension {
+class SlugableExtension extends \DataExtension {
     private static $db = [
         'URLSegment' => 'Varchar(200)'
     ];
@@ -33,7 +35,6 @@ class SlugableExtension extends DataExtension {
 
         $defaults = $this->owner->config()->defaults;
         $URLSegment = $this->owner->URLSegment;
-
         // If there is no URLSegment set, generate one from Title
         if((!$URLSegment || $URLSegment == $defaults['URLSegment']) && $this->owner->Title != $defaults['Title']) {
             $URLSegment = $this->generateURLSegment($this->owner->Title);
@@ -50,7 +51,6 @@ class SlugableExtension extends DataExtension {
         // Ensure that this object has a non-conflicting URLSegment value.
         $count = 2;
         $ID = $this->owner->ID;
-
         while($this->lookForExistingURLSegment($URLSegment, $ID)) {
             $URLSegment = preg_replace('/-[0-9]+$/', null, $URLSegment) . '-' . $count;
             $count++;
@@ -84,17 +84,14 @@ class SlugableExtension extends DataExtension {
      * @return string generated url segment
      */
     public function generateURLSegment($title) {
-        $filter = URLSegmentFilter::create();
+        $filter = \URLSegmentFilter::create();
         $t = $filter->filter($title);
-
         // Fallback to generic page name if path is empty (= no valid, convertable characters)
         if(!$t || $t == '-' || $t == '-1') {
             $t = $this->fallbackUrl();
         }
-
         // Hook for extensions
         $this->owner->extend('updateURLSegment', $t, $title);
-
         return $t;
     }
 

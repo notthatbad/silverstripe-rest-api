@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * The interface for serialize formatters for the rest module provides defines
  * a method for working with the given data.

@@ -1,5 +1,10 @@
 <?php
 
+namespace Ntb\RestAPI;
+
+use SapphireTest;
+use SS_HTTPRequest;
+
 /**
  * Tests for the serializer factory.
  * @author Christian Blank <c.blank@notthatbad.net>
@@ -20,13 +25,13 @@ class SerializerFactoryTest extends SapphireTest {
     public function testEmptyMimeType() {
         TestHelper::assertException(function() {
             SerializerFactory::create("");
-        }, 'RestUserException');
+        }, 'Ntb\RestAPI\RestUserException');
     }
 
     public function testUnsupportedMimeType() {
         TestHelper::assertException(function() {
             SerializerFactory::create("foo/bar");
-        }, 'RestUserException');
+        }, 'Ntb\RestAPI\RestUserException');
     }
 
     public function testCreateFromRequestWithAcceptHeader() {
