@@ -3,6 +3,7 @@
 namespace Ntb\RestAPI;
 
 use Director;
+use Exception;
 use HTMLText;
 use SS_HTTPRequest;
 use SS_HTTPResponse;
@@ -46,6 +47,19 @@ abstract class BaseRestController extends \Controller {
     }
 
     /**
+     * @param SS_HTTPRequest $request
+     * @return null
+     * @throws RestUserException
+     */
+    protected function head(SS_HTTPRequest $request) {
+        if(method_exists($this, 'get')) {
+            $result = $this->get($request);
+            return null;
+        }
+        throw new RestUserException("Endpoint doesn't have a GET implementation", 404);
+    }
+
+    /**
      * handleAction implementation for rest controllers. This handles the requested action differently then the standard
      * implementation.
      *
@@ -84,7 +98,6 @@ abstract class BaseRestController extends \Controller {
                 // perform action
                 $actionResult = $this->$action($request);
             }
-            // set content type
             $body = $actionResult;
         } catch(RestUserException $ex) {
             // a user exception was caught
@@ -116,7 +129,7 @@ abstract class BaseRestController extends \Controller {
             SS_Log::log(
                 json_encode(array_merge($body, ['file' => $ex->getFile(), 'line' => $ex->getLine()])),
                 SS_Log::WARN);
-        } catch(\Exception $ex) {
+        } catch(Exception $ex) {
             // an unexpected exception was caught
             $response->addHeader('Content-Type', $serializer->contentType());
             $response->setStatusCode("500");
@@ -155,8 +168,8 @@ abstract class BaseRestController extends \Controller {
      */
     private function getMethodName($request) {
         $method = '';
-        if(\Director::isDev() && ($varMethod = $request->getVar('method'))) {
-            if(in_array(strtoupper($varMethod), array('GET','POST','PUT','DELETE','HEAD'))) {
+        if(Director::isDev() && ($varMethod = $request->getVar('method'))) {
+            if(in_array(strtoupper($varMethod), ['GET','POST','PUT','DELETE','HEAD', 'PATCH'])) {
                 $method = $varMethod;
             }
         } else {
