@@ -24,12 +24,10 @@ class SessionAuth extends \Object implements IAuth {
 		$user->logIn();
 		/** @var \Member $user */
 		$user = \DataObject::get(\Config::inst()->get('BaseRestController', 'Owner'))->byID($user->ID);
-
 		// create session
 		$session = ApiSession::create();
 		$session->User = $user;
 		$session->Token = AuthFactory::generate_token($user);
-
 		return $session;
 	}
 

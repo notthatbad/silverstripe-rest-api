@@ -17,6 +17,7 @@ class SessionEndpointTest extends RestTest {
             'v/1/SessionRoute/$ID' => 'Ntb\RestAPI\SessionController',
         ]);
         Config::inst()->update('Injector', 'ApiMemberAuthenticator', 'MemberAuthenticator');
+        Config::inst()->update('BaseRestController', 'Owner', 'Member');
     }
 
     protected static $fixture_file = [
@@ -39,7 +40,7 @@ class SessionEndpointTest extends RestTest {
 
     public function testTryDeleteSessionWithoutID() {
         $session = $this->createSession();
-        $result = $this->makeApiRequest('SessionRoute', ['token' => $session['token'], 'method' => 'DELETE', 'code' => 401]);
+        $result = $this->makeApiRequest('SessionRoute', ['token' => $session['token'], 'method' => 'DELETE', 'code' => 400]);
 
         $this->assertTrue(array_key_exists('code', $result));
         $this->assertTrue(array_key_exists('message', $result));
@@ -48,7 +49,7 @@ class SessionEndpointTest extends RestTest {
 
     public function testTryDeleteSessionWithWrongId() {
         $session = $this->createSession();
-        $result = $this->makeApiRequest('SessionRoute/-2', ['token' => $session['token'], 'method' => 'DELETE', 'code' => 401]);
+        $result = $this->makeApiRequest('SessionRoute/-2', ['token' => $session['token'], 'method' => 'DELETE', 'code' => 400]);
 
         $this->assertTrue(array_key_exists('code', $result));
         $this->assertTrue(array_key_exists('message', $result));

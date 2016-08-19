@@ -5,6 +5,7 @@ namespace Ntb\RestAPI;
 use Director;
 use Exception;
 use HTMLText;
+use Member;
 use SS_HTTPRequest;
 use SS_HTTPResponse;
 use SS_Log;
@@ -14,6 +15,11 @@ use SS_Log;
  * @author Christian Blank <c.blank@notthatbad.net>
  */
 abstract class BaseRestController extends \Controller {
+
+    private static $allowed_actions = array (
+        'options' => true,
+        'head' => true
+    );
 
     /**
      * Configuration option.
@@ -51,9 +57,13 @@ abstract class BaseRestController extends \Controller {
      * @return null
      * @throws RestUserException
      */
-    protected function head(SS_HTTPRequest $request) {
+    public function head(SS_HTTPRequest $request) {
         if(method_exists($this, 'get')) {
             $result = $this->get($request);
+            if($result instanceof SS_HTTPResponse) {
+                $result->setBody(null);
+                return $result;
+            }
             return null;
         }
         throw new RestUserException("Endpoint doesn't have a GET implementation", 404);

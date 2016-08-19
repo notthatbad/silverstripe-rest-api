@@ -46,6 +46,18 @@ class BaseRestControllerTest extends RestTest {
         $this->assertTrue(array_key_exists('message', $result));
         $this->assertEquals('Test PUT', $result['message']);
     }
+
+    public function testControllerHEAD() {
+        $result = $this->makeApiRequest('RestTestRoute', ['method' => 'HEAD']);
+        $this->assertEquals(null, $result);
+    }
+
+    public function testControllerPATCH() {
+        $result = $this->makeApiRequest('RestTestRoute', ['method' => 'PATCH']);
+
+        $this->assertTrue(array_key_exists('message', $result));
+        $this->assertEquals('Test PATCH', $result['message']);
+    }
 }
 
 class TestController extends BaseRestController implements \TestOnly {
@@ -54,7 +66,8 @@ class TestController extends BaseRestController implements \TestOnly {
         'post' => true,
         'delete' => true,
         'get' => true,
-        'put' => true
+        'put' => true,
+        'patch' => true
     );
 
     public function get() {
@@ -71,5 +84,9 @@ class TestController extends BaseRestController implements \TestOnly {
 
     public function delete() {
         return ['message' => 'Test DELETE'];
+    }
+
+    public function patch() {
+        return ['message' => 'Test PATCH'];
     }
 }
