@@ -1,10 +1,12 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Factory for different kind of rest authenticators.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class AuthFactory extends Object {
+class AuthFactory extends \Object {
 
     /**
      * Returns a new instance of an authentication mechanism depending on the configured type.
@@ -12,19 +14,19 @@ class AuthFactory extends Object {
      * @throws RestSystemException
      */
     public static function createAuth() {
-        return Injector::inst()->get('Authenticator');
+        return \Injector::inst()->get('Authenticator');
     }
 
     /**
      * Generates an encrypted random token.
-     * @param Member $user
-     * @throws PasswordEncryptor_NotFoundException
+     * @param \Member $user
+     * @throws \PasswordEncryptor_NotFoundException
      * @return string
      */
     public static function generate_token($user) {
-        $generator = new RandomGenerator();
+        $generator = new \RandomGenerator();
         $tokenString = $generator->randomToken();
-        $e = PasswordEncryptor::create_for_algorithm('blowfish');
+        $e = \PasswordEncryptor::create_for_algorithm('blowfish');
         $salt = $e->salt($tokenString);
         $token = sha1($e->encrypt($tokenString, $salt)) . substr(md5($user->Created.$user->LastEdited.$user->ID), 7);
         return $token;
@@ -35,9 +37,9 @@ class AuthFactory extends Object {
      *
      * Silverstripe doesn't include Authorization header in its requests. We should check it, because we can use the
      * mechanism in the tests.
-     * @param SS_HTTPRequest $request
+     * @param \SS_HTTPRequest $request
      * @return String the token
-     * @throws Exception
+     * @throws \Exception
      */
     public static function get_token($request) {
         // try to get the token from request object
@@ -56,7 +58,7 @@ class AuthFactory extends Object {
                 return explode(' ', $headers['Authorization'])[1];
             }
         }
-        throw new Exception("Token can't be read or was not specified");
+        throw new \Exception("Token can't be read or was not specified");
     }
 }
 

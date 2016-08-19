@@ -1,10 +1,12 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Class PaginationExtension
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class PaginationExtension extends Extension {
+class PaginationExtension extends \Extension {
 
     /**
      * The default limit.
@@ -23,7 +25,7 @@ class PaginationExtension extends Extension {
     /**
      * Returns the offset, either given in request by `offset` or from the default settings in the controller.
      *
-     * @param SS_HTTPRequest $request
+     * @param \SS_HTTPRequest $request
      * @return int the offset value
      */
     public function offset($request) {
@@ -38,7 +40,7 @@ class PaginationExtension extends Extension {
     /**
      * Returns the limit, either given in request by `limit` or from the default settings in the controller.
      *
-     * @param SS_HTTPRequest $request
+     * @param \SS_HTTPRequest $request
      * @return int the limit value
      */
     public function limit($request) {

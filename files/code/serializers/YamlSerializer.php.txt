@@ -1,11 +1,14 @@
 <?php
+
+namespace Ntb\RestAPI;
+
 use Symfony\Component\Yaml\Dumper;
 
 /**
  * Serializer for yaml.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class YamlSerializer extends Object implements IRestSerializer {
+class YamlSerializer extends \Object implements IRestSerializer {
 
     /**
      * @config

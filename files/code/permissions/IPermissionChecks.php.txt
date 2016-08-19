@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Interface for permission checks.
  *
@@ -9,7 +11,7 @@ interface IPermissionChecks {
 
     /**
      * Checks if a given member has admin rights.
-     * @param Member $member the member
+     * @param \Member $member the member
      * @return bool TRUE if given member is an admin
      */
     public function isAdmin($member);

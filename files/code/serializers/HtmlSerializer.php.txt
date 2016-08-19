@@ -1,10 +1,12 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Serializer for html.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class HtmlSerializer extends ViewableData implements IRestSerializer {
+class HtmlSerializer extends \ViewableData implements IRestSerializer {
 
     /**
      * @config
@@ -25,7 +27,7 @@ class HtmlSerializer extends ViewableData implements IRestSerializer {
      */
     public function serialize($data) {
         $list = $this->recursive($data, 1);
-        return $this->renderWith(['Result', 'Controller'], ['Data' => ArrayList::create($list)]);
+        return $this->renderWith(['Result', 'Controller'], ['Data' => \ArrayList::create($list)]);
     }
 
     public function contentType() {
@@ -37,10 +39,10 @@ class HtmlSerializer extends ViewableData implements IRestSerializer {
         if(is_array($data)) {
             foreach ($data as $key => $value) {
                 if(is_array($value)) {
-                    $list[] = ArrayData::create(['Key' => $key, 'Value' => '', 'Heading' => true, 'Level' => $level]);
+                    $list[] = \ArrayData::create(['Key' => $key, 'Value' => '', 'Heading' => true, 'Level' => $level]);
                     $list = array_merge($list, $this->recursive($value, $level+1));
                 } else {
-                    $list[] = ArrayData::create(['Key' => $key, 'Value' => $value, 'Level' => $level]);
+                    $list[] = \ArrayData::create(['Key' => $key, 'Value' => $value, 'Level' => $level]);
                 }
             }
         }

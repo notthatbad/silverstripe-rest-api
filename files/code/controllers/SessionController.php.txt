@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * ApiSession controller is the controller for the session resource.
  * @author Christian Blank <c.blank@notthatbad.net>
@@ -12,7 +14,7 @@ class SessionController extends BaseRestController {
     );
 
 	/**
-	 * @param SS_HTTPRequest $request
+	 * @param \SS_HTTPRequest $request
 	 * @return array
 	 * @throws RestSystemException
 	 * @throws RestUserException
@@ -23,18 +25,17 @@ class SessionController extends BaseRestController {
             throw new RestUserException("No data for session provided.", 401, 401);
         }
         try{
-            $validated = Injector::inst()->get('SessionValidator')->validate($data);
-            $user = Injector::inst()->get('ApiMemberAuthenticator')->authenticate($validated);
+            $validated = \Injector::inst()->get('SessionValidator')->validate($data);
+            $user = \Injector::inst()->get('ApiMemberAuthenticator')->authenticate($validated);
             $session = $user ? AuthFactory::createAuth()->createSession($user) : null;
             if (!$session) {
                 throw new RestUserException("Login incorrect", 401, 401);
             }
-        } catch(ValidationException $e) {
+        } catch(\ValidationException $e) {
 	        throw new RestUserException($e->getMessage(), 422, 422);
         } catch(RestUserException $e) {
 	        throw $e;
-        } catch(Exception $e) {
-            error_log($e->getMessage());
+        } catch(\Exception $e) {
             throw new RestSystemException($e->getMessage(), $e->getCode() ?: 500);
         }
         $meta = ['timestamp' => time()];
@@ -46,7 +47,7 @@ class SessionController extends BaseRestController {
     }
 
     /**
-     * @param SS_HTTPRequest $request
+     * @param \SS_HTTPRequest $request
      * @return array
      * @throws RestUserException
      */
@@ -64,7 +65,7 @@ class SessionController extends BaseRestController {
             }
         } catch(RestUserException $e) {
             throw $e;
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             throw new RestUserException("ApiSession was not found", 404);
         }
         $meta = ['timestamp' => time()];

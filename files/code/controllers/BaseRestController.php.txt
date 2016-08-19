@@ -1,10 +1,25 @@
 <?php
 
+namespace Ntb\RestAPI;
+
+use Director;
+use Exception;
+use HTMLText;
+use Member;
+use SS_HTTPRequest;
+use SS_HTTPResponse;
+use SS_Log;
+
 /**
  * Base class for the rest resource controllers.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-abstract class BaseRestController extends Controller {
+abstract class BaseRestController extends \Controller {
+
+    private static $allowed_actions = array (
+        'options' => true,
+        'head' => true
+    );
 
     /**
      * Configuration option.
@@ -35,6 +50,23 @@ abstract class BaseRestController extends Controller {
             $response->output();
             exit;
         }
+    }
+
+    /**
+     * @param SS_HTTPRequest $request
+     * @return null
+     * @throws RestUserException
+     */
+    public function head(SS_HTTPRequest $request) {
+        if(method_exists($this, 'get')) {
+            $result = $this->get($request);
+            if($result instanceof SS_HTTPResponse) {
+                $result->setBody(null);
+                return $result;
+            }
+            return null;
+        }
+        throw new RestUserException("Endpoint doesn't have a GET implementation", 404);
     }
 
     /**
@@ -76,7 +108,6 @@ abstract class BaseRestController extends Controller {
                 // perform action
                 $actionResult = $this->$action($request);
             }
-            // set content type
             $body = $actionResult;
         } catch(RestUserException $ex) {
             // a user exception was caught
@@ -142,13 +173,13 @@ abstract class BaseRestController extends Controller {
      * Returns the http method for this request. If the current environment is a development env, the method can be
      * changed with a `method` variable.
      *
-     * @param SS_HTTPRequest $request the current request
+     * @param \SS_HTTPRequest $request the current request
      * @return string the used http method as string
      */
     private function getMethodName($request) {
         $method = '';
         if(Director::isDev() && ($varMethod = $request->getVar('method'))) {
-            if(in_array(strtoupper($varMethod), array('GET','POST','PUT','DELETE','HEAD'))) {
+            if(in_array(strtoupper($varMethod), ['GET','POST','PUT','DELETE','HEAD', 'PATCH'])) {
                 $method = $varMethod;
             }
         } else {
@@ -174,24 +205,24 @@ abstract class BaseRestController extends Controller {
      */
     protected function isAdmin() {
         $member = $this->currentUser();
-        return $member && Injector::inst()->get('PermissionChecks')->isAdmin($member);
+        return $member && \Injector::inst()->get('PermissionChecks')->isAdmin($member);
     }
 
     /**
-     * @param SS_HTTPResponse $response the current response object
-     * @return SS_HTTPResponse the response with CORS headers
+     * @param \SS_HTTPResponse $response the current response object
+     * @return \SS_HTTPResponse the response with CORS headers
      */
     protected function addCORSHeaders($response) {
-        $response->addHeader('Access-Control-Allow-Origin', Config::inst()->get('BaseRestController', 'CORSOrigin'));
-        $response->addHeader('Access-Control-Allow-Methods', Config::inst()->get('BaseRestController', 'CORSMethods'));
-        $response->addHeader('Access-Control-Max-Age', Config::inst()->get('BaseRestController', 'CORSMaxAge'));
-        $response->addHeader('Access-Control-Allow-Headers', Config::inst()->get('BaseRestController', 'CORSAllowHeaders'));
+        $response->addHeader('Access-Control-Allow-Origin', \Config::inst()->get('BaseRestController', 'CORSOrigin'));
+        $response->addHeader('Access-Control-Allow-Methods', \Config::inst()->get('BaseRestController', 'CORSMethods'));
+        $response->addHeader('Access-Control-Max-Age', \Config::inst()->get('BaseRestController', 'CORSMaxAge'));
+        $response->addHeader('Access-Control-Allow-Headers', \Config::inst()->get('BaseRestController', 'CORSAllowHeaders'));
         return $response;
     }
 
     /**
      * Return the current user from the request.
-     * @return Member the current user
+     * @return \Member the current user
      */
     protected function currentUser() {
         return AuthFactory::createAuth()->current($this->request);

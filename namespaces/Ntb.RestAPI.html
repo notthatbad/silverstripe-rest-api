@@ -21,55 +21,7 @@
     <script src="../js/jquery.smooth-scroll.js"></script>
     <script src="../js/prism.min.js"></script>
     <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
-        <script type="text/javascript">
-        function loadExternalCodeSnippets() {
-            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
-                var src = pre.getAttribute('data-src');
-                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-                var language = 'php';
-
-                var code = document.createElement('code');
-                code.className = 'language-' + language;
-
-                pre.textContent = '';
-
-                code.textContent = 'Loading…';
-
-                pre.appendChild(code);
-
-                var xhr = new XMLHttpRequest();
-
-                xhr.open('GET', src, true);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
-
-                        if (xhr.status < 400 && xhr.responseText) {
-                            code.textContent = xhr.responseText;
-
-                            Prism.highlightElement(code);
-                        }
-                        else if (xhr.status >= 400) {
-                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-                        }
-                        else {
-                            code.textContent = '✖ Error: File does not exist or is empty';
-                        }
-                    }
-                };
-
-                xhr.send(null);
-            });
-        }
-
-        $(document).ready(function(){
-            loadExternalCodeSnippets();
-        });
-        $('#source-view').on('shown', function () {
-            loadExternalCodeSnippets();
-        })
-    </script>
-
+    
     <link rel="shortcut icon" href="../images/favicon.ico"/>
     <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
     <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
@@ -144,28 +96,28 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-175146616"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-794073821"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-175146616" class="accordion-body collapse in">
+            <div id="namespace-794073821" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-49702049"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-757073977"></a>
                                 <a href="../namespaces/Ntb.html" style="margin-left: 30px; padding-left: 0">Ntb</a>
             </div>
-            <div id="namespace-49702049" class="accordion-body collapse ">
+            <div id="namespace-757073977" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1958485124"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1513152116"></a>
                                 <a href="../namespaces/Ntb.RestAPI.html" style="margin-left: 30px; padding-left: 0">RestAPI</a>
             </div>
-            <div id="namespace-1958485124" class="accordion-body collapse ">
+            <div id="namespace-1513152116" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -227,38 +179,156 @@
     <section class="row-fluid">
         <div class="span10 offset2">
             <div class="row-fluid">
-                <div class="span8 content file">
+                <div class="span8 content namespace">
                     <nav>
-                                                                    </nav>
-
-                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
-                    <h1><small>code/extensions</small>SlugableExtension.php</h1>
-                    <p><em></em></p>
-                    
+                                                <a href="../namespaces/Ntb.html">\Ntb</a>
+                                            </nav>
+                    <h1><small>\Ntb</small>RestAPI</h1>
 
                     
+                    
+                                        <h2>Interfaces</h2>
+                    <table class="table table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Ntb.RestAPI.IAuth.html">IAuth</a></td>
+                                <td><em>Interface for authentication mechanisms.</em></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Ntb.RestAPI.IPermissionChecks.html">IPermissionChecks</a></td>
+                                <td><em>Interface for permission checks.</em></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Ntb.RestAPI.IRestSerializeFormatter.html">IRestSerializeFormatter</a></td>
+                                <td><em>The interface for serialize formatters for the rest module provides defines
+a method for working with the given data.</em></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Ntb.RestAPI.IRestSerializer.html">IRestSerializer</a></td>
+                                <td><em>Provides methods for serializing data.</em></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Ntb.RestAPI.IRestValidator.html">IRestValidator</a></td>
+                                <td><em>Interface for data validators in the rest api.</em></td>
+                            </tr>
+                                            </table>
                     
                                         <h2>Classes</h2>
                     <table class="table table-hover">
                                             <tr>
+                            <td><a href="../classes/Ntb.RestAPI.ApiSession.html">ApiSession</a></td>
+                            <td><em></em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.AuthFactory.html">AuthFactory</a></td>
+                            <td><em>Factory for different kind of rest authenticators.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.BaseRestController.html">BaseRestController</a></td>
+                            <td><em>Base class for the rest resource controllers.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.DataListExtension.html">DataListExtension</a></td>
+                            <td><em>Useful extensions for data lists.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.HtmlSerializer.html">HtmlSerializer</a></td>
+                            <td><em>Serializer for html.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.HttpAuth.html">HttpAuth</a></td>
+                            <td><em>Authentication mechanism using a BasicAuth request.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.JsonSerializer.html">JsonSerializer</a></td>
+                            <td><em>Serializer for json.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.JwtAuth.html">JwtAuth</a></td>
+                            <td><em>Authentication mechanism using a token in the request header and validates it on every request.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.NestedResourceRestController.html">NestedResourceRestController</a></td>
+                            <td><em>The nested resource controller can help you to avoid some boilerplate in nested resources in you rest api.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.PaginationExtension.html">PaginationExtension</a></td>
+                            <td><em>Class PaginationExtension</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.RestSystemException.html">RestSystemException</a></td>
+                            <td><em>The system exception can be used for showing a system error like a missing file or a broken connection.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.RestTest.html">RestTest</a></td>
+                            <td><em>Rest test class can work as base class for your functional tests. It provides some helpful methods to test your rest
+api more easily.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.RestUserException.html">RestUserException</a></td>
+                            <td><em>The user exception can be used for indicating the wrong usage of the rest api.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.RestValidatorHelper.html">RestValidatorHelper</a></td>
+                            <td><em>Some generic validators for incoming data.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.SerializerFactory.html">SerializerFactory</a></td>
+                            <td><em>Factory for different kind of rest serializers.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.SessionAuth.html">SessionAuth</a></td>
+                            <td><em>Authentication mechanism which uses the internal Silverstripe authentication (session based).</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.SessionController.html">SessionController</a></td>
+                            <td><em>ApiSession controller is the controller for the session resource.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.SessionFormatter.html">SessionFormatter</a></td>
+                            <td><em>The session formatter can format a session into a representation which is consumable from a IRestSerializer.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.SessionValidator.html">SessionValidator</a></td>
+                            <td><em>Class SessionValidator</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.SilverstripePermission.html">SilverstripePermission</a></td>
+                            <td><em>Implements the IPermission interface and uses the Silverstripe permission system.</em></td>
+                        </tr>
+                                            <tr>
                             <td><a href="../classes/Ntb.RestAPI.SlugableExtension.html">SlugableExtension</a></td>
                             <td><em>Extension for data objects which should be identifiable by a slug.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.TestHelper.html">TestHelper</a></td>
+                            <td><em>Test Helper class provides some helpful functions for tests.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.TokenAuth.html">TokenAuth</a></td>
+                            <td><em>Authentication mechanism using a token in the request header. Valid tokens are saved in cache.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.XmlSerializer.html">XmlSerializer</a></td>
+                            <td><em>Serializer for xml.</em></td>
+                        </tr>
+                                            <tr>
+                            <td><a href="../classes/Ntb.RestAPI.YamlSerializer.html">YamlSerializer</a></td>
+                            <td><em>Serializer for yaml.</em></td>
                         </tr>
                                         </table>
                                     </div>
 
                 <aside class="span4 detailsbar">
                     <dl>
-                                                    <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">\Default</div></dd>
-                        
-                        
+                        <dt>Namespace hierarchy</dt>
+                        <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                                                                                                                            
+                                    <div class="namespace-wrapper"><a href="../namespaces/default.html">\</a></div>
+                                                            
+                                    <div class="namespace-wrapper"><a href="../namespaces/Ntb.html">\Ntb</a></div>
+                                                                                        <div class="namespace-wrapper">\Ntb\RestAPI</div>
+                        </dd>
                     </dl>
-                    <h2>Tags</h2>
-                    <table class="table table-condensed">
-                                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                                            </table>
-
                 </aside>
             </div>
 
@@ -266,16 +336,6 @@
             
         </div>
     </section>
-
-    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label"></h3>
-        </div>
-        <div class="modal-body">
-            <pre data-src="../files/code/extensions/SlugableExtension.php.txt" class="language-php line-numbers"></pre>
-        </div>
-    </div>
 
     <footer class="row-fluid">
         <section class="span10 offset2">

@@ -1,10 +1,12 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Serializer for xml.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class XmlSerializer extends Object implements IRestSerializer {
+class XmlSerializer extends \Object implements IRestSerializer {
 
     /**
      * @config
@@ -24,7 +26,7 @@ class XmlSerializer extends Object implements IRestSerializer {
      * @return string a xml formatted string
      */
     public function serialize($data) {
-        $xml = new SimpleXMLElement('<result/>');
+        $xml = new \SimpleXMLElement('<result/>');
         $this->toXml($xml, $data);
         return $xml->asXML();
     }
@@ -33,7 +35,7 @@ class XmlSerializer extends Object implements IRestSerializer {
         return $this->contentType;
     }
 
-    private function toXml(SimpleXMLElement $object, array $data) {
+    private function toXml(\SimpleXMLElement $object, array $data) {
         foreach( $data as $key => $value ) {
             if(is_array($value) ) {
                 if( is_numeric($key) ){

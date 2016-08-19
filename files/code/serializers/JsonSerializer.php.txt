@@ -1,10 +1,12 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Serializer for json.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class JsonSerializer extends Object implements IRestSerializer {
+class JsonSerializer extends \Object implements IRestSerializer {
 
     /**
      * @config
