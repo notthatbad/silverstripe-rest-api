@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Interface for data validators in the rest api.
  * @author Christian Blank <c.blank@notthatbad.net>
@@ -10,7 +12,7 @@ interface IRestValidator {
      *
      * @param array $data
      * @return array
-     * @throws ValidationException
+     * @throws \ValidationException
      */
     public static function validate($data);
 } 

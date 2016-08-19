@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Provides methods for serializing data.
  * @author Christian Blank <c.blank@notthatbad.net>

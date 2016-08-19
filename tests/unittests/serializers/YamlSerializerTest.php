@@ -1,5 +1,9 @@
 <?php
 
+namespace Ntb\RestAPI;
+
+use SapphireTest;
+
 /**
  * Tests for the yaml serializer.
  * @author Christian Blank <c.blank@notthatbad.net>

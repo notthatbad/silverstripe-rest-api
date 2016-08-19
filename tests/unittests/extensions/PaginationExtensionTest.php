@@ -1,5 +1,11 @@
 <?php
 
+namespace Ntb\RestAPI;
+
+use Object;
+use SapphireTest;
+use SS_HTTPRequest;
+use TestOnly;
 
 class PaginationExtensionTest extends SapphireTest {
 
@@ -7,7 +13,7 @@ class PaginationExtensionTest extends SapphireTest {
 
     public function setUp() {
         parent::setUp();
-        PaginationTestController::add_extension('PaginationExtension');
+        PaginationTestController::add_extension('Ntb\RestAPI\PaginationExtension');
         $this->controller = new PaginationTestController();
     }
 

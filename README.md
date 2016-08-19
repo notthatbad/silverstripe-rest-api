@@ -1,7 +1,7 @@
 REST module for Silverstripe 
 ============================
 
-[![Build Status](https://travis-ci.org/notthatbad/silverstripe-rest-api.svg)](https://travis-ci.org/notthatbad/silverstripe-rest-api)
+[![Build Status](https://travis-ci.org/notthatbad/silverstripe-rest-api.svg?branch=master)](https://travis-ci.org/notthatbad/silverstripe-rest-api)
 [![Latest Stable Version](https://poser.pugx.org/ntb/silverstripe-rest-api/v/stable)](https://packagist.org/packages/ntb/silverstripe-rest-api)
 [![License](https://poser.pugx.org/ntb/silverstripe-rest-api/license)](https://packagist.org/packages/ntb/silverstripe-rest-api)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/notthatbad/silverstripe-rest-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/notthatbad/silverstripe-rest-api/?branch=master)
@@ -31,7 +31,7 @@ Director:
   rules:
     'v/1/users/$ID!/friends/$FriendID': 'FriendshipController'
     'v/1/users/$ID': 'UserController'
-    'v/1/sessions/$ID': 'SessionController'
+    'v/1/sessions/$ID': 'Ntb\RestAPI\SessionController'
 ```
 
 ### GET Parameters
@@ -49,4 +49,4 @@ fixtures for testing like it is explained in the Silverstripe documentation.
 
 ## More Information
 
-Yo can find more information in the [wiki](https://github.com/notthatbad/silverstripe-rest-api/wiki).
+You can find more information in the [wiki](https://github.com/notthatbad/silverstripe-rest-api/wiki).

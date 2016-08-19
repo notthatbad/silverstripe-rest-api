@@ -1,5 +1,9 @@
 <?php
 
+namespace Ntb\RestAPI;
+
+use SapphireTest;
+
 /**
  * Test the JWT auth mechanism
  * @todo: add more tests

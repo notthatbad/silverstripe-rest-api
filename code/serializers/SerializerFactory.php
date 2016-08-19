@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI;
+
 /**
  * Factory for different kind of rest serializers.
  * @author Christian Blank <c.blank@notthatbad.net>
@@ -20,7 +22,7 @@ class SerializerFactory {
      * @throws RestUserException
      */
     public static function create($mimeType='application/json') {
-        $availableSerializers = ClassInfo::implementorsOf('IRestSerializer');
+        $availableSerializers = \ClassInfo::implementorsOf('Ntb\RestAPI\IRestSerializer');
         foreach($availableSerializers as $serializer) {
             /** @var IRestSerializer $instance */
             $instance = new $serializer();
@@ -34,7 +36,7 @@ class SerializerFactory {
     /**
      * Determines the correct serializer from an incoming request.
      *
-     * @param SS_HTTPRequest $request the request object
+     * @param \SS_HTTPRequest $request the request object
      * @return IRestSerializer a new instance of a serializer which fits the request best
      * @throws RestUserException
      */
@@ -44,7 +46,7 @@ class SerializerFactory {
                 if(array_key_exists($type, self::$lookup)) {
                     return self::create(self::$lookup[$type]);
                 }
-            } catch(Exception $e) {}
+            } catch(\Exception $e) {}
         }
         $types = $request->getAcceptMimetypes();
         foreach($types as $type) {
