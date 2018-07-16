@@ -9,7 +9,7 @@
     "api"
   ],
   "require": {
-    "silverstripe/framework": ">=3.1.13",
+    "silverstripe/framework": "^3.1.13",
     "php": ">=5.3.2",
     "composer/installers": "*"
   },
