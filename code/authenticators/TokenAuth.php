@@ -6,7 +6,7 @@ namespace Ntb\RestAPI;
  * Authentication mechanism using a token in the request header. Valid tokens are saved in cache.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class TokenAuth extends \Object implements IAuth {
+class TokenAuth extends \SS_Object implements IAuth {
 
     public static function authenticate($email, $password) {
         $authenticator = \Injector::inst()->get('ApiMemberAuthenticator');

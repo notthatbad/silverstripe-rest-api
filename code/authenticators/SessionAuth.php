@@ -6,7 +6,7 @@ namespace Ntb\RestAPI;
  * Authentication mechanism which uses the internal Silverstripe authentication (session based).
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class SessionAuth extends \Object implements IAuth {
+class SessionAuth extends \SS_Object implements IAuth {
 
     public static function authenticate($email, $password) {
         // auth

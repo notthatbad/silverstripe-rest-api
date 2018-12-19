@@ -6,7 +6,7 @@ namespace Ntb\RestAPI;
  *
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class ApiSession extends \Object {
+class ApiSession extends \SS_Object {
     /**
      * @var \Member
      */

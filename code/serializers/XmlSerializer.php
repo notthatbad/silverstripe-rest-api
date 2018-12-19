@@ -6,13 +6,13 @@ namespace Ntb\RestAPI;
  * Serializer for xml.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class XmlSerializer extends \Object implements IRestSerializer {
+class XmlSerializer extends \SS_Object implements IRestSerializer {
 
     /**
      * @config
      */
     private static $is_active = true;
-    
+
     /**
      * The content type.
      * @var string

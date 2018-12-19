@@ -8,13 +8,13 @@ use Symfony\Component\Yaml\Dumper;
  * Serializer for yaml.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class YamlSerializer extends \Object implements IRestSerializer {
+class YamlSerializer extends \SS_Object implements IRestSerializer {
 
     /**
      * @config
      */
     private static $is_active = true;
-    
+
     /**
      * The content type.
      * @var string

@@ -7,7 +7,7 @@ namespace Ntb\RestAPI;
  *
  * @author Andre Lohmann <lohmann.andre@gmail.com>
  */
-class HttpAuth extends \Object implements IAuth {
+class HttpAuth extends \SS_Object implements IAuth {
 
     public static function authenticate($email, $password) {
         $authenticator = \Injector::inst()->get('ApiMemberAuthenticator');
@@ -50,7 +50,7 @@ class HttpAuth extends \Object implements IAuth {
             return ($member instanceof \Member) ?
                 \DataObject::get(\Config::inst()->get('BaseRestController', 'Owner'))->byID($member->ID) : null;
         }
-        
+
         /**
          * @return \Member
          */

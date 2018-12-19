@@ -2,7 +2,7 @@
 
 namespace Ntb\RestAPI;
 
-use Object;
+use SS_Object;
 use SapphireTest;
 use SS_HTTPRequest;
 use TestOnly;
@@ -26,7 +26,7 @@ class PaginationExtensionTest extends SapphireTest {
     }
 }
 
-class PaginationTestController extends Object implements TestOnly {
+class PaginationTestController extends SS_Object implements TestOnly {
 
     public function getLimit($request) {
         return $this->limit($request);

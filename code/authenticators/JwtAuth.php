@@ -9,7 +9,7 @@ namespace Ntb\RestAPI;
  * The mechanism works stateless. JWT is described in RFC 7519.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class JwtAuth extends \Object implements IAuth {
+class JwtAuth extends \SS_Object implements IAuth {
 
     public static function authenticate($email, $password) {
         $authenticator = \Injector::inst()->get('ApiMemberAuthenticator');

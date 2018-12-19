@@ -18,7 +18,7 @@ interface IRestSerializeFormatter {
      * It also applies access rights on properties and can filter different
      * fields.
      *
-     * @param Object $data can be an object or a data object
+     * @param SS_Object $data can be an object or a data object
      * @param array $access the access rights for particular fields
      * @param array $fields a list of requested fields
      * @return array the serializable result

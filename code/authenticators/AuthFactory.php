@@ -6,7 +6,7 @@ namespace Ntb\RestAPI;
  * Factory for different kind of rest authenticators.
  * @author Christian Blank <c.blank@notthatbad.net>
  */
-class AuthFactory extends \Object {
+class AuthFactory extends \SS_Object {
 
     /**
      * Returns a new instance of an authentication mechanism depending on the configured type.
